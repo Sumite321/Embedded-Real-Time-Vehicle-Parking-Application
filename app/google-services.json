@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1063145290613",
+    "firebase_url": "https://paypark-88594.firebaseio.com",
+    "project_id": "paypark-88594",
+    "storage_bucket": "paypark-88594.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063145290613:android:6db40b6f73011807",
+        "android_client_info": {
+          "package_name": "com.smt.sweettreats.paypark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063145290613-akutbq4b25r2ldanm5mptipjtlds0oer.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smt.sweettreats.paypark",
+            "certificate_hash": "b1f56bcdae5d632df4029c77ff7afddbca9a464e"
+          }
+        },
+        {
+          "client_id": "1063145290613-a54eqbv1kq47mii3u88oplsihag7hl77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBggnWdLPSLLCrmyoVROe4ZCkyqO9qGIxM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063145290613-a54eqbv1kq47mii3u88oplsihag7hl77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
