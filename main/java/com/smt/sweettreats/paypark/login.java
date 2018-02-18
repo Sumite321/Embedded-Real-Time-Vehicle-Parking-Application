@@ -38,11 +38,6 @@ public class login extends AppCompatActivity {
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
-
-
-
-
-
         login = (Button) findViewById(R.id.btn_login);
         //tv = (TextView) findViewById(R.id.link_signup);
         edit_usr = (EditText) findViewById(R.id.edit_user);
@@ -53,7 +48,7 @@ public class login extends AppCompatActivity {
             public void onClick(View v) {
                 mProgress.show();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference userRef = database.getReference("users");
+                DatabaseReference userRef = database.getReference("login");
                 userRef.child(edit_usr.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {

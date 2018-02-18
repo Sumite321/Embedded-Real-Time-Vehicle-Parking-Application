@@ -11,7 +11,7 @@ public class Location {
 
     private String latitude;
     private String longitude;
-    private List<String> addresses;
+    private List<String> addresses = new ArrayList<>();
     private List<Addresses> compiledAddresses = new ArrayList<>();
 
 

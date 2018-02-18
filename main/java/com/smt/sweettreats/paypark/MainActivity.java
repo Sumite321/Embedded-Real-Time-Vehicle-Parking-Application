@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
-        ref = FirebaseDatabase.getInstance().getReference();
+
 
         db = new DBConnection(); // initialise the database connection
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         eSendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, login.class));
+                startActivity(new Intent(MainActivity.this, register.class));
             }
         });
 
