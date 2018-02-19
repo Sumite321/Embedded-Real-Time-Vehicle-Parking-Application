@@ -150,7 +150,8 @@ public class register extends AppCompatActivity {
 
                        // myUsr.setText(key1);
 
-
+                        startActivity(new Intent(register.this,success.class));
+                        finish();
 
 
 
