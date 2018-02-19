@@ -14,9 +14,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -86,52 +92,86 @@ public class register extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // get the current ID registered
+                DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("users");
+                mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot){
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                // get the spinner info into text
-                String text = spinner.getSelectedItem().toString();
-                String[] addressLine1 = text.split(","); // addressline1[0] for first line
-                // get the name
-                String name = myName.getText().toString();
-                // get the email
-                String email = myEmail.getText().toString();
-                // get the username
-                String username = myUsr.getText().toString();
-                // get the password
-                String password = myPw.getText().toString();
+                        int key = 0; // contains the current key
 
-                DatabaseReference usersName = database.getReference("users")
-                        .child(String.valueOf(5))
-                        .child("Name");
-                usersName.setValue(name);
+                        for(DataSnapshot s: dataSnapshot.getChildren()){
+                            key = Integer.parseInt(s.getKey());
+                        }
+                        key = key +1 ;
+                        //String key1 = String.valueOf(key);
 
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        // get the spinner info into text
+                        String text = spinner.getSelectedItem().toString();
+                        String[] addressLine1 = text.split(","); // addressline1[0] for first line
+                        // get the name
+                        String name = myName.getText().toString();
+                        // get the email
+                        String email = myEmail.getText().toString();
+                        // get the username
+                        String username = myUsr.getText().toString();
+                        // get the password
+                        String password = myPw.getText().toString();
 
-                DatabaseReference usersEmail = database.getReference("users")
-                        .child(String.valueOf(5))
-                        .child("Email");
-                usersEmail.setValue(email);
-
-                DatabaseReference usersAddress = database.getReference("users")
-                        .child(String.valueOf(5))
-                        .child("Address");
-                usersAddress.setValue(addressLine1[0]);
-
-                DatabaseReference loginUsr = database.getReference("login")
-                        .child(username);
-
-                DatabaseReference loginPw = database.getReference("login")
-                        .child(username)
-                        .child("password");
-                loginPw.setValue(password);
-
-                DatabaseReference loginValue = database.getReference("login")
-                        .child(username)
-                        .child("ID");
-                loginValue.setValue(String.valueOf(5));
+                        DatabaseReference usersName = database.getReference("users")
+                                .child(String.valueOf(key))
+                                .child("Name");
+                        usersName.setValue(name);
 
 
+                        DatabaseReference usersEmail = database.getReference("users")
+                                .child(String.valueOf(key))
+                                .child("Email");
+                        usersEmail.setValue(email);
 
-                loginLink.setText(name + email  + username + password);
+                        DatabaseReference usersAddress = database.getReference("users")
+                                .child(String.valueOf(key))
+                                .child("Address");
+                        usersAddress.setValue(addressLine1[0]);
+
+                        DatabaseReference loginUsr = database.getReference("login")
+                                .child(username);
+
+                        DatabaseReference loginPw = database.getReference("login")
+                                .child(username)
+                                .child("password");
+                        loginPw.setValue(password);
+
+                        DatabaseReference loginValue = database.getReference("login")
+                                .child(username)
+                                .child("ID");
+                        loginValue.setValue(String.valueOf(key));
+
+                       // myUsr.setText(key1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        throw databaseError.toException(); // don't swallow errors
+                    }
+                });
+
+
             }
         });
 
