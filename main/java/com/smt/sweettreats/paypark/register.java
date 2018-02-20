@@ -50,7 +50,7 @@ public class register extends AppCompatActivity {
     Spinner dropdown;
     private Button search,next;
     public Spinner spinner;
-    private TextView loginLink, myName, myEmail,myUsr,myPw;
+    private TextView loginLink, myName, myEmail, availability, price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +65,8 @@ public class register extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner1);
         myName = (TextView)  findViewById(R.id.input_name);
         myEmail = (TextView) findViewById(R.id.input_email);
-        myUsr = (TextView) findViewById(R.id.input_username);
-        myPw = (TextView) findViewById(R.id.input_password);
+        availability = (TextView)  findViewById(R.id.input_availability);
+        price = (TextView) findViewById(R.id.input_price);
 
 
         /* ******** Button Listeners ******** */
@@ -114,10 +114,10 @@ public class register extends AppCompatActivity {
                         String name = myName.getText().toString();
                         // get the email
                         String email = myEmail.getText().toString();
-                        // get the username
-                        String username = myUsr.getText().toString();
-                        // get the password
-                        String password = myPw.getText().toString();
+                        // get the name
+                        String avai = availability.getText().toString();
+                        // get the email
+                        String priceHour = price.getText().toString();
 
                         DatabaseReference usersName = database.getReference("users")
                                 .child(String.valueOf(key))
@@ -135,48 +135,25 @@ public class register extends AppCompatActivity {
                                 .child("Address");
                         usersAddress.setValue(addressLine1[0]);
 
-                        DatabaseReference loginUsr = database.getReference("login")
-                                .child(username);
+                        DatabaseReference slotAvailability = database.getReference("slot")
+                                .child(addressLine1[0])
+                                .child("availability");
+                        slotAvailability.setValue(avai);
 
-                        DatabaseReference loginPw = database.getReference("login")
-                                .child(username)
-                                .child("password");
-                        loginPw.setValue(password);
-
-                        DatabaseReference loginValue = database.getReference("login")
-                                .child(username)
-                                .child("ID");
-                        loginValue.setValue(String.valueOf(key));
-
-                       // myUsr.setText(key1);
-
-                        startActivity(new Intent(register.this,success.class));
+                        DatabaseReference slotPrice = database.getReference("slot")
+                                .child(addressLine1[0])
+                                .child("price");
+                        slotPrice.setValue(priceHour);
+                        startActivity(new Intent(register.this,register_username.class));
                         finish();
-
-
-
-
-
-
-
-
-
-
-
-
-
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         throw databaseError.toException(); // don't swallow errors
                     }
                 });
-
-
             }
         });
-
-
     } // END OF ONCREATE
 
 

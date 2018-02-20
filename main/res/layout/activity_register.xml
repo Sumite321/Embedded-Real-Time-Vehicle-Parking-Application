@@ -90,7 +90,6 @@
             android:padding="1dp"
             android:text="Find address" />
 
-        <!-- Username Label -->
         <Spinner
             android:id="@+id/spinner1"
             android:layout_width="match_parent"
@@ -102,6 +101,7 @@
 
 
 
+        <!-- Username Label -->
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -110,10 +110,10 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/input_username"
+                android:id="@+id/input_availability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
+                android:hint="Availability"
                 android:inputType="textWebEditText" />
         </android.support.design.widget.TextInputLayout>
 
@@ -126,11 +126,11 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/input_password"
+                android:id="@+id/input_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                android:hint="Price"
+                android:inputType="textWebEditText" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -144,6 +144,8 @@
             android:padding="12dp"
             android:text="Next" />
 
+
+        <!-- Member already Button -->
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

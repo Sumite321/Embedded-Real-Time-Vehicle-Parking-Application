@@ -17,7 +17,10 @@
         </activity>
         <activity android:name=".login" />
         <activity android:name=".register" />
-        <activity android:name=".success"></activity>
+        <activity android:name=".success" />
+        <activity android:name=".register_username" />
+        <activity android:name=".sensor_question" />
+        <activity android:name=".bookingListView"></activity>
     </application>
 
 </manifest>

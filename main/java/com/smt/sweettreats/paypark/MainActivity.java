@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "";
-    private Button eSendData;
+    private Button toRegister, toBook;
     private DatabaseReference ref;
 
 
@@ -32,25 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
         db = new DBConnection(); // initialise the database connection
 
-        eSendData = (Button) findViewById(R.id.suite);
+        toRegister = (Button) findViewById(R.id.suite);
+        toBook = (Button) findViewById(R.id.suite);
 
-        /*
-        eSendData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Firebase connection  = fb.child("Connection").child("12354");
-                connection.setValue("Success CORRECT");
-                txt.setText("W");
-            }
-        });
-        */
-        eSendData.setOnClickListener(new View.OnClickListener() {
+     
+        toRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, register.class));
             }
         });
 
+        toBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, bookingListView.class));
+            }
+        });
 
 
 
