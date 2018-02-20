@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         db = new DBConnection(); // initialise the database connection
 
         toRegister = (Button) findViewById(R.id.suite);
-        toBook = (Button) findViewById(R.id.suite);
+        toBook = (Button) findViewById(R.id.suite2);
 
-     
+
         toRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
