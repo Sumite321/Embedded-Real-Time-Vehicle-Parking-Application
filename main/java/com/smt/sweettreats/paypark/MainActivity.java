@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         toBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, bookingListView.class));
+                startActivity(new Intent(MainActivity.this, success.class));
             }
         });
 
