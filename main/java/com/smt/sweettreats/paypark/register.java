@@ -44,7 +44,6 @@ public class register extends AppCompatActivity {
 
     String stream = null;
     Location postcode = new Location();
-    Common common = new Common();
     String mpostData = "NW44SG";
     private EditText postData;
     Spinner dropdown;
@@ -75,7 +74,6 @@ public class register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-
                 startActivity(new Intent(register.this, login.class));
                 finish();
             }

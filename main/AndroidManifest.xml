@@ -20,7 +20,8 @@
         <activity android:name=".success" />
         <activity android:name=".register_username" />
         <activity android:name=".sensor_question" />
-        <activity android:name=".bookingListView"></activity>
+        <activity android:name=".bookingListView" />
+        <activity android:name=".ApiRadius"></activity>
     </application>
 
 </manifest>

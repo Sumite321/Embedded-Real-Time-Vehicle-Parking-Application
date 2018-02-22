@@ -11,14 +11,25 @@ import java.util.Date;
  */
 
 public class Common {
-        public static String API_KEY = "T0WVNrizz06OmAvknC_1yA12330";
-        public static String API_LINK = "https://api.getaddress.io/find/";
+        private static String API_KEY = "T0WVNrizz06OmAvknC_1yA12330";
+        private static String API_LINK = "https://api.getaddress.io/find/";
+        private static String API_LINK2 = "https://api.postcodes.io/outcodes/"; //"https://api.postcodes.io/outcodes/HA0/nearest?radius=2000"
+
 
         @NonNull
         public static String apiRequest(String postC){
             StringBuilder sb = new StringBuilder(API_LINK);
             sb.append(String.format("%s?api-key=%s",postC,API_KEY));
             return sb.toString();
+        }
+
+        public static String apiRadius(String post, String radius){
+
+            StringBuilder sb = new StringBuilder(API_LINK2);
+            sb.append(String.format("%s/nearest?radius=%s",post,radius));
+            return sb.toString();
+
+
         }
 
 /*

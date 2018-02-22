@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             public void onClick(View v) {
                 System.out.println("Test");
                 System.out.println(rentalSlots);
-                Intent intent = new Intent(MainActivity.this, bookingListView.class);
+                Intent intent = new Intent(MainActivity.this, ApiRadius.class);
                 intent.putExtra("mylist", rentalSlots);
                 startActivity(intent);
                 finish();
