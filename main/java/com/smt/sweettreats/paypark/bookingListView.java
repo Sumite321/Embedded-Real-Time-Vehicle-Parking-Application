@@ -14,14 +14,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class bookingListView extends AppCompatActivity {
+public class bookingListView extends AppCompatActivity implements Serializable{
 
     public ArrayList<slot> rentalSlots = new ArrayList<>();
-
-
     private ListView mListView;
 
 
@@ -30,11 +29,18 @@ public class bookingListView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_list_view);
 
+
+
+        rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("mylist");
+
+        System.out.print("asd");
+        System.out.print(rentalSlots);
+
         //create our slot elements
-        rentalSlots.add(new slot(10, "Smith Street", "Sydney", "NSW", "A large 3 bedroom apartment right in the heart of Sydney! A rare find, with 3 bedrooms and a secured car park.", 450.00, "slot_image_1", 3, 1, 1, false));
-        rentalSlots.add(new slot(66, "King Street", "Sydney", "NSW", "A fully furnished studio apartment overlooking the harbour. Minutes from the CBD and next to transport, this is a perfect set-up for city living.", 320.00, "slot_image_2", 1, 1, 1, false));
-        rentalSlots.add(new slot(1, "Liverpool Road", "Liverpool", "NSW", "A standard 3 bedroom house in the suburbs. With room for several cars and right next to shops this is perfect for new families.", 360.00, "slot_image_3", 3, 2, 2, true));
-        rentalSlots.add(new slot(567, "Sunny Street", "Gold Coast", "QLD", "Come and see this amazing studio apartment in the heart of the gold coast, featuring stunning waterfront views.", 360.00, "slot_image_4" , 1, 1, 1, false));
+        //rentalSlots.add(new slot(10, "Smith Street", "Sydney", "NSW", "A large 3 bedroom apartment right in the heart of Sydney! A rare find, with 3 bedrooms and a secured car park.", 450.00, "slot_image_1", 3, 1, 1, false));
+        //rentalSlots.add(new slot(66, "King Street", "Sydney", "NSW", "A fully furnished studio apartment overlooking the harbour. Minutes from the CBD and next to transport, this is a perfect set-up for city living.", 320.00, "slot_image_2", 1, 1, 1, false));
+        //rentalSlots.add(new slot(1, "Liverpool Road", "Liverpool", "NSW", "A standard 3 bedroom house in the suburbs. With room for several cars and right next to shops this is perfect for new families.", 360.00, "slot_image_3", 3, 2, 2, true));
+        //rentalSlots.add(new slot(567, "Sunny Street", "Gold Coast", "QLD", "Come and see this amazing studio apartment in the heart of the gold coast, featuring stunning waterfront views.", 360.00, "slot_image_4" , 1, 1, 1, false));
 
 
        
@@ -55,10 +61,10 @@ public class bookingListView extends AppCompatActivity {
                 slot slot = rentalSlots.get(position);
 
                 Intent intent = new Intent(bookingListView.this, success.class);
-                intent.putExtra("streetNumber", slot.getStreetNumber());
+                //intent.putExtra("streetNumber", slot.getStreetNumber());
                 intent.putExtra("streetName", slot.getStreetName());
                 intent.putExtra("suburb", slot.getSuburb());
-                intent.putExtra("state", slot.getState());
+                //intent.putExtra("state", slot.getState());
                 intent.putExtra("image", slot.getImage());
 
                 startActivityForResult(intent, 1000);
@@ -111,7 +117,7 @@ public class bookingListView extends AppCompatActivity {
             ImageView image = (ImageView) view.findViewById(R.id.image);
 
             //set address and description
-            String completeAddress = slot.getStreetNumber() + " " + slot.getStreetName() + ", " + slot.getSuburb() + ", " + slot.getState();
+            String completeAddress =  " " + slot.getStreetName() + ", " + slot.getSuburb() + ", ";
             address.setText(completeAddress);
 
             //display trimmed excerpt for description
@@ -125,8 +131,8 @@ public class bookingListView extends AppCompatActivity {
 
             //set price and rental attributes
             price.setText("$" + String.valueOf(slot.getPrice()));
-            bedroom.setText("Bed: " + String.valueOf(slot.getBedrooms()));
-            bathroom.setText("Bath: " + String.valueOf(slot.getBathrooms()));
+            //bedroom.setText("Bed: " + String.valueOf(slot.getBedrooms()));
+            //bathroom.setText("Bath: " + String.valueOf(slot.getBathrooms()));
             carspot.setText("Car: " + String.valueOf(slot.getCarspots()));
 
             //get the image associated with this slot

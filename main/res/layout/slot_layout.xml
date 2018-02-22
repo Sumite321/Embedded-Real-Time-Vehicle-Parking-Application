@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/price"
             android:layout_marginRight="15dp"
-            android:text="Bed:" />
+            android:text="opt:" />
 
         <TextView
             android:id="@+id/bathroom"
@@ -67,7 +67,7 @@
             android:layout_below="@id/price"
             android:layout_marginRight="15dp"
             android:layout_toRightOf="@id/bedroom"
-            android:text="Bath:" />
+            android:text="opt:" />
 
         <TextView
             android:id="@+id/carspot"
