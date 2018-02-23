@@ -31,7 +31,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
 
 
-        rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("mylist");
+        rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("filteredPostcode");
 
         System.out.print("asd");
         System.out.print(rentalSlots);

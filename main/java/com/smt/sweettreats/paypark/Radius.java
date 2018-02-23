@@ -1,5 +1,6 @@
 package com.smt.sweettreats.paypark;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by admin on 22/02/2018.
  */
 
-public class Radius {
+public class Radius implements Serializable{
 
 
     private int status;

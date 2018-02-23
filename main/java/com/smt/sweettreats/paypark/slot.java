@@ -13,7 +13,7 @@ public class slot implements Serializable{
     //private int streetNumber;
     private String streetName;
     private String suburb;
-    //private String state;
+    private String outcode;
     private String description;
     private String image;
     private Double price;
@@ -23,13 +23,13 @@ public class slot implements Serializable{
     private Boolean featured;
 
     //constructor
-    public slot( String streetName, String suburb,
+    public slot( String streetName, String outcode, String suburb,
             String description, Double price, String image, int carspots, Boolean featured){
 
         //this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.suburb = suburb;
-        //this.state = state;
+        this.outcode = outcode;
         this.description = description;
         this.price = price;
         this.image = image;
@@ -43,7 +43,7 @@ public class slot implements Serializable{
     //public int getStreetNumber() { return streetNumber; }
     public String getStreetName() {return streetName; }
     public String getSuburb() {return suburb; }
-   // public String getState() {return state; }
+    public String getOutcode() {return outcode; }
     public String getDescription() {return description; }
     public Double getPrice() {return price; }
     public String getImage() { return image; }
