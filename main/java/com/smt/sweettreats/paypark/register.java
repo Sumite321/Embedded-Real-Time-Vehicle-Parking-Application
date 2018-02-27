@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -35,7 +38,9 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -48,7 +53,7 @@ public class register extends AppCompatActivity {
     private EditText postData;
     Spinner dropdown;
     private Button search,next;
-    public Spinner spinner;
+    public Spinner spinner,spin_prices;
     private TextView loginLink, myName, myEmail, availability, price;
 
     @Override
@@ -64,10 +69,45 @@ public class register extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner1);
         myName = (TextView)  findViewById(R.id.input_name);
         myEmail = (TextView) findViewById(R.id.input_email);
-        availability = (TextView)  findViewById(R.id.input_availability);
-        price = (TextView) findViewById(R.id.input_price);
+        //availability = (TextView)  findViewById(R.id.input_availability);
+        //price = (TextView) findViewById(R.id.input_price);
+        spin_prices = (Spinner) findViewById(R.id.spin_price);
 
 
+
+
+        /* Date */
+
+
+        final DatePicker datePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
+        TimePicker tF = (TimePicker) findViewById(R.id.timeFrom);
+        TimePicker tI = (TimePicker) findViewById(R.id.timeTill);
+
+        datePicker.setSpinnersShown(true); // set false value for the spinner shown funct
+
+        tF.setIs24HourView(true);
+        tI.setIs24HourView(true);
+
+
+        /* Prices */
+
+        List<String> prices = new ArrayList<>();
+
+
+        // populate with the hours and minutes
+        // time interval of 10 minutes
+        for(double a = 0;a<=1;a+=0.1){
+                prices.add(String.valueOf(a));
+        }
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(register.this, android.R.layout.simple_spinner_item, prices);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spin_prices.setAdapter(dataAdapter);
         /* ******** Button Listeners ******** */
 
         loginLink.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +153,24 @@ public class register extends AppCompatActivity {
                         // get the email
                         String email = myEmail.getText().toString();
                         // get the name
-                        String avai = availability.getText().toString();
+                        //String avai = availability.getText().toString(); // needs to change for double spinners each with
+
+                        //get the from time
+                        int   day  = datePicker.getDayOfMonth();
+                        int   month= datePicker.getMonth();
+                        int   year = datePicker.getYear();
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, day);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        String formatedDate = sdf.format(calendar.getTime());
+                        //get the till time
+                        // get the date
+                       // String date =
+
+
                         // get the email
-                        String priceHour = price.getText().toString();
+                        String priceHour = spin_prices.getSelectedItem().toString();
 
                         DatabaseReference usersName = database.getReference("users")
                                 .child(String.valueOf(key))
@@ -135,8 +190,10 @@ public class register extends AppCompatActivity {
 
                         DatabaseReference slotAvailability = database.getReference("slot")
                                 .child(addressLine1[0])
-                                .child("availability");
-                        slotAvailability.setValue(avai);
+                                .child("availability")
+                                .child(formatedDate)
+                                .child("from_time");
+                                slotAvailability.setValue("14");
 
                         DatabaseReference slotPrice = database.getReference("slot")
                                 .child(addressLine1[0])

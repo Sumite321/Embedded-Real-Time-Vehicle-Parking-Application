@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,16 +23,19 @@ import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ApiRadius extends AppCompatActivity implements Serializable{
 
     private TextView text;
-    private EditText filter;
+    private EditText filter,radius;
     Radius getRadius = new Radius();
     private ArrayList<String> filteredPostcode = new ArrayList<>();
     private Button showFiltered;
     public ArrayList<slot> rentalSlots = new ArrayList<>();
     private ArrayList<slot> showFilteredArray = new ArrayList<>();
+    private ArrayList<String> availability;
+    private Spinner spin_from,spin_till;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,40 +45,49 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         text = (TextView) findViewById(R.id.postcode_search);
         showFiltered = (Button) findViewById(R.id.btn_showbooking);
         filter = (EditText) findViewById(R.id.input_postcode);
+        radius = (EditText) findViewById(R.id.input_radius);
+        spin_from = (Spinner) findViewById(R.id.drop_from);
+        spin_till = (Spinner) findViewById(R.id.drop_till);
 
         showFilteredArray.clear();
         //Get datasnapshot at your "users" root node
         DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref2, ref3, ref4;
+        DatabaseReference ref2, ref3;
         ref2 = ref1.child("slot");
+        ref3 = ref2.child("slot").child("availability");
 
+        // will populate the booking slots
         ref2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    double price =  Double.valueOf(dsp.child("price").getValue().toString());
-                    String time = dsp.child("availability").getValue().toString();
-                    String outcode = dsp.child("postcode").getValue().toString();
-                    //if(filteredPostcode.contains(dsp.getKey())) {
-                    rentalSlots.add(new slot(String.valueOf(dsp.getKey()), outcode,"London", "Available to book", price, "slot_image_1", 1, false));
-                    //}
+        // Result will be holded Here
+            for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                double price = Double.valueOf(dsp.child("price").getValue().toString());
+                String outcode = dsp.child("postcode").getValue().toString();
+                dsp.child("availability");
+                for(DataSnapshot a: dsp.child("availability").getChildren()){
+                    String timeFrom = a.child("from_time").getValue().toString();
+                    String timeTill = a.child("till_time").getValue().toString();
+                    String date = a.getKey();
+                    availability = new ArrayList<>();
+                    availability.add(date);
+                    availability.add(timeFrom);
+                    availability.add(timeTill);
+                    rentalSlots.add(new slot(String.valueOf(dsp.getKey()), outcode, "London", availability, price, "driveway", 1, false));
                 }
             }
+        }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
+            public void onCancelled(DatabaseError databaseError) {}
         });
+
         showFiltered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),"50"));
+                new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radius.getText().toString()));
                 //System.out.println(rentalSlots);
                 //System.out.println(showFilteredArray);
 
@@ -81,8 +95,33 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
         });
         System.out.println(showFilteredArray);
+
+        List<String> hours = new ArrayList<>();
+
+
+        // populate with the hours and minutes
+        // time interval of 10 minutes
+        for(int a = 0;a<=23;a++){
+            for(int b = 00;b<=50;b+=10){
+                if(b == 0){hours.add(String.valueOf(a)+":"+String.valueOf(b)+"0");}
+                else{hours.add(String.valueOf(a)+":"+String.valueOf(b));}
+            }
+        }
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ApiRadius.this, android.R.layout.simple_spinner_item, hours);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spin_from.setAdapter(dataAdapter);
+        spin_till.setAdapter(dataAdapter);
     }
-    private class getPostCodeinRadius extends AsyncTask<String,Void,String> {
+
+
+
+            private class getPostCodeinRadius extends AsyncTask<String,Void,String> {
         ProgressDialog pd = new ProgressDialog(ApiRadius.this);
 
 
@@ -131,6 +170,8 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
             Intent intent = new Intent(ApiRadius.this, bookingListView.class);
             intent.putExtra("filteredPostcode", showFilteredArray);
+            intent.putExtra("fromTime",spin_from.getSelectedItem().toString());
+            intent.putExtra("tillTime", spin_till.getSelectedItem().toString());
             startActivity(intent);
             finish();
             pd.dismiss();

@@ -1,6 +1,8 @@
 package com.smt.sweettreats.paypark;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 21/02/2018.
@@ -14,7 +16,7 @@ public class slot implements Serializable{
     private String streetName;
     private String suburb;
     private String outcode;
-    private String description;
+    private List<String> description = new ArrayList<>();
     private String image;
     private Double price;
     //private int bedrooms;
@@ -24,7 +26,7 @@ public class slot implements Serializable{
 
     //constructor
     public slot( String streetName, String outcode, String suburb,
-            String description, Double price, String image, int carspots, Boolean featured){
+            List<String> description, Double price, String image, int carspots, Boolean featured){
 
         //this.streetNumber = streetNumber;
         this.streetName = streetName;
@@ -44,7 +46,11 @@ public class slot implements Serializable{
     public String getStreetName() {return streetName; }
     public String getSuburb() {return suburb; }
     public String getOutcode() {return outcode; }
-    public String getDescription() {return description; }
+
+    public List<String> getDescription() {
+        return description;
+    }
+
     public Double getPrice() {return price; }
     public String getImage() { return image; }
    // public int getBedrooms(){ return bedrooms; }
