@@ -45,6 +45,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
     private ArrayList<String> filteredPostcode = new ArrayList<>();
     private Button showFiltered;
     public ArrayList<slot> rentalSlots = new ArrayList<>();
+    public ArrayList<slot> rentalSlotsUpdated = new ArrayList<>();
     private ArrayList<slot> showFilteredArray = new ArrayList<>();
     private ArrayList<String> availability = new ArrayList<>();
     private String line1,outcode;
@@ -116,58 +117,33 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                         System.out.println(dataS.child(input_booking_date.getText().toString()).exists());
                         // validation
                         availability.add("bullcrap");
-                        for (DataSnapshot dsp : dataS.getChildren()) {
-                            // if the date exists in the bookings, and date has addresses, go to next condition
-                            System.out.println("Working");
-                            System.out.println(dsp.getKey().equals(input_booking_date.getText().toString()));
-                            System.out.println(dsp.child(input_booking_date.getText().toString()).getValue()!=null);
-                            System.out.println(input_booking_date.getText().toString());
-                            System.out.println(dsp.getValue().toString());
-                            if(dsp.getKey().equals(input_booking_date.getText().toString())){
 
+                        // if the table has the date
+                        if(dataS.child(input_booking_date.getText().toString()).exists()) {
 
-
+                            // run the loop if the date exists
+                            //contains all the addresses for the date requested
+                            for (DataSnapshot dsp : dataS.child(input_booking_date.getText().toString()).getChildren()) {
                                 System.out.println("Working");
+                                System.out.println(dsp.getKey().equals(input_booking_date.getText().toString()));
+                                System.out.println(dsp.child(input_booking_date.getText().toString()).getValue() != null);
+                                System.out.println(input_booking_date.getText().toString());
+                                System.out.println(dsp.getValue().toString());//
+                                line1 = dsp.getKey(); // has the address
 
-                                // loop through all the streets
-                                availability.add("bullcrap");
-                                System.out.println(dsp.getKey()); // HAS THE DATE
-                                for(DataSnapshot address : dsp.child(input_booking_date.getText().toString()).getChildren()){
-                                    //loop here will go through all the addresses
-                                    System.out.println(dsp.getKey()); // HAS THE ADDRESS
-
-                                    line1 = address.getKey();
-                                    if((address.getValue()!=null)){
-                                        // loop thorugh all the bookings
-                                        System.out.println(dsp.getKey());
-
-                                        for(DataSnapshot bookingID : address.getChildren()){
-                                            String timeFrom = bookingID.child("from_time").getValue().toString();
-                                            String timeTill = bookingID.child("till_time").getValue().toString();
-
-                                            System.out.println(dsp.getKey());
-
-                                            if (checktimings(timeFrom,booking_time_f.getText().toString())
-                                                    && !checktimings(timeTill,booking_time_t.getText().toString())){
-                                                // add to array
-                                                line1 = "asd";
-                                                availability.add(line1);
-                                                System.out.println(availability.toString());
-                                                System.out.println(dsp.getKey());
-
-                                                //availability.add("2");
-                                                //rentalSlots.add(new slot(line1, "HA0", "London", availability, 0.0, "driveway", 1, false));
-                                            }
-                                            // show booking
-                                            // else "No available timing"
-                                            else{
-                                                System.out.println("Nothing found");
-                                            }
-                                        }
+                                // loop through all the bookingID
+                                for (DataSnapshot bookingID : dsp.getChildren()) {
+                                        //loop here will go through all the addresses
+                                        System.out.println(dsp.getKey()); // has the ID
+                                        String from = bookingID.child("from_time").getValue().toString();
+                                        String till = bookingID.child("till_time").getValue().toString();
+                                        // if checkTimings
+                                    if(checktimings(from,booking_time_f.getText().toString())
+                                            && !checktimings(till,booking_time_t.getText().toString())){
+                                        availability.add(line1);
                                     }
-                                    // else is available
+                                    }
                                 }
-                            }
                         }
                         System.out.println(availability.toString());
 
@@ -179,7 +155,13 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
                 });
 
+                for(slot s:rentalSlots){
 
+                    if(!availability.contains(s.getStreetName())){
+                        rentalSlotsUpdated.add(s);
+                    }
+
+                }
 
                 //System.out.println(rentalSlots);
                 //System.out.println(showFilteredArray);
@@ -229,12 +211,12 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             Type mType = new TypeToken<Radius>(){}.getType();
             getRadius = gson.fromJson(result,mType);
 
-            if (!rentalSlots.isEmpty()){
+            if (!rentalSlotsUpdated.isEmpty()){
                 for (Location l : getRadius.getResult()) {
                     filteredPostcode.add(l.getOutcode());
                     //System.out.println(l.getDistance());
                 }
-                for (slot s : rentalSlots) {
+                for (slot s : rentalSlotsUpdated) {
                     System.out.println(filteredPostcode.contains(s.getOutcode()));
                     System.out.println(availability.toString());
                     if (filteredPostcode.contains(s.getOutcode())) {
