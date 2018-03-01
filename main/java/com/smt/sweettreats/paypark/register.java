@@ -1,10 +1,18 @@
 package com.smt.sweettreats.paypark;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +46,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,12 +58,11 @@ public class register extends AppCompatActivity {
 
     String stream = null;
     Location postcode = new Location();
-    String mpostData = "NW44SG";
     private EditText postData;
     Spinner dropdown;
     private Button search,next;
     public Spinner spinner,spin_prices;
-    private TextView loginLink, myName, myEmail, availability, price;
+    private TextView loginLink, myName, myEmail, input_date,input_time_from,input_time_till;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +87,6 @@ public class register extends AppCompatActivity {
         /* Date */
 
 
-        final DatePicker datePicker = (DatePicker)findViewById(R.id.simpleDatePicker); // initiate a date picker
-        TimePicker tF = (TimePicker) findViewById(R.id.timeFrom);
-        TimePicker tI = (TimePicker) findViewById(R.id.timeTill);
-
-        datePicker.setSpinnersShown(true); // set false value for the spinner shown funct
-
-        tF.setIs24HourView(true);
-        tI.setIs24HourView(true);
-
-
         /* Prices */
 
         List<String> prices = new ArrayList<>();
@@ -97,7 +95,7 @@ public class register extends AppCompatActivity {
         // populate with the hours and minutes
         // time interval of 10 minutes
         for(double a = 0;a<=1;a+=0.1){
-                prices.add(String.valueOf(a));
+                prices.add(String.format("%.2f",a));
         }
 
 
@@ -133,6 +131,7 @@ public class register extends AppCompatActivity {
                 // get the current ID registered
                 DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("users");
                 mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot){
 
@@ -155,21 +154,7 @@ public class register extends AppCompatActivity {
                         // get the name
                         //String avai = availability.getText().toString(); // needs to change for double spinners each with
 
-                        //get the from time
-                        int   day  = datePicker.getDayOfMonth();
-                        int   month= datePicker.getMonth();
-                        int   year = datePicker.getYear();
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(year, month, day);
-
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                        String formatedDate = sdf.format(calendar.getTime());
-                        //get the till time
-                        // get the date
-                       // String date =
-
-
-                        // get the email
+                        // get the price
                         String priceHour = spin_prices.getSelectedItem().toString();
 
                         DatabaseReference usersName = database.getReference("users")
@@ -188,17 +173,31 @@ public class register extends AppCompatActivity {
                                 .child("Address");
                         usersAddress.setValue(addressLine1[0]);
 
-                        DatabaseReference slotAvailability = database.getReference("slot")
+                        DatabaseReference slotAvailabilityFrom = database.getReference("slot")
                                 .child(addressLine1[0])
                                 .child("availability")
-                                .child(formatedDate)
+                                .child(input_date.getText().toString())
                                 .child("from_time");
-                                slotAvailability.setValue("14");
+                                slotAvailabilityFrom.setValue(input_time_from.getText().toString());
+
+                        DatabaseReference slotAvailabilityTill = database.getReference("slot")
+                                .child(addressLine1[0])
+                                .child("availability")
+                                .child(input_date.getText().toString())
+                                .child("till_time");
+                        slotAvailabilityTill.setValue(input_time_till.getText().toString());
 
                         DatabaseReference slotPrice = database.getReference("slot")
                                 .child(addressLine1[0])
                                 .child("price");
                         slotPrice.setValue(priceHour);
+
+                        DatabaseReference slotOutcode = database.getReference("slot")
+                                .child(addressLine1[0])
+                                .child("postcode");
+                        String outcode = postData.getText().toString();
+                        slotOutcode.setValue(outcode.substring(0, outcode.length() - 3));
+
                         startActivity(new Intent(register.this,register_username.class));
                         finish();
                     }
@@ -271,6 +270,88 @@ public class register extends AppCompatActivity {
 
             //System.out.println(postcode.getLatitude());
             //System.out.println(postcode.getAddress());
+        }
+    }
+
+
+
+
+    public void selectDate(View view) {
+        DialogFragment newFragment = new register.SelectDateFragment();
+        newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    public void populateSetDate(int year, int month, int day) {
+        input_date = (TextView)findViewById(R.id.input_date);
+        input_date.setText(String.valueOf(String.format("%d-%d-%d",day,month,year)));
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int yy = calendar.get(Calendar.YEAR);
+            int mm = calendar.get(Calendar.MONTH);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(getActivity(), this, yy, mm, dd);
+        }
+
+        public void onDateSet(DatePicker view, int yy, int mm, int dd) {
+            populateSetDate(yy, mm+1, dd);
+        }
+    }
+
+
+
+    public void selectFromTime(View view) {
+        DialogFragment newFragment = new register.SelectFromTimeFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectFromTimeFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int hh = calendar.get(Calendar.HOUR_OF_DAY);
+            int m = calendar.get(Calendar.MINUTE);
+            return new TimePickerDialog(getActivity(), this, hh, m, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            populateSetFromTime(i,i1);
+        }
+
+        public void populateSetFromTime(int hour, int minute) {
+            input_time_from = (TextView)findViewById(R.id.input_time_from);
+            if(minute<10){input_time_from.setText(hour+":0"+minute);}
+            else{input_time_from.setText(hour+":"+minute);}
+        }
+    }
+
+
+    public void selectTillTime(View view) {
+        DialogFragment newFragment = new register.SelectTillTimeFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectTillTimeFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int hh = calendar.get(Calendar.HOUR_OF_DAY);
+            int m = calendar.get(Calendar.MINUTE);
+            return new TimePickerDialog(getActivity(), this, hh, m, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            populateSetTillTime(i,i1);
+        }
+
+        public void populateSetTillTime(int hour, int minute) {
+            if(minute<10){input_time_from.setText(hour+":0"+minute);}
+            else{input_time_from.setText(hour+":"+minute);}
         }
     }
 }

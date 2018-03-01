@@ -22,7 +22,8 @@
         <activity android:name=".sensor_question" />
         <activity android:name=".bookingListView" />
         <activity android:name=".ApiRadius" />
-        <activity android:name=".ConfirmBooking"></activity>
+        <activity android:name=".ConfirmBooking" />
+        <activity android:name=".DateTest"></activity>
     </application>
 
 </manifest>

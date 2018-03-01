@@ -98,32 +98,86 @@
             android:spinnerMode="dropdown"
             android:paddingTop="20dp"></Spinner>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
-        <DatePicker
-            android:id="@+id/simpleDatePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="88dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
-            android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/input_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress" />
+        </android.support.design.widget.TextInputLayout>
 
-        <TimePicker
-            android:id="@+id/timeFrom"
-            android:layout_width="wrap_content"
-            android:layout_height="70sp"
-            android:layout_below="@id/simpleDatePicker"
-            android:timePickerMode="spinner"
-            android:layout_gravity="center"
-            />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_date"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectDate"
+            android:text="Pick Date" />
 
-        <TimePicker
-            android:id="@+id/timeTill"
-            android:layout_width="wrap_content"
-            android:layout_height="70sp"
-            android:layout_below="@id/simpleDatePicker"
-            android:timePickerMode="spinner"
-            android:layout_gravity="center"
-            />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/input_time_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeFrom"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectFromTime"
+            android:text="Pick From Time" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/input_time_till"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeTill"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectTillTime"
+            android:text="Pick End Time" />
+
 
         <!-- Price Label -->
         <Spinner
@@ -132,12 +186,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background"
             android:spinnerMode="dropdown"
-            android:paddingTop="20dp"></Spinner>
-
-
-
-
-
+            android:paddingTop="20dp"
+            ></Spinner>
         <!-- Signup Button -->
 
         <android.support.v7.widget.AppCompatButton
