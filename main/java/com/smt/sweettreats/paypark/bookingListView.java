@@ -28,6 +28,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
     public ArrayList<slot> rentalSlots = new ArrayList<>();
     private ListView mListView;
+    private boolean available;
 
 
     @Override
@@ -38,62 +39,6 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
 
         rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("filteredPostcode");
-
-
-        String fromTime = getIntent().getExtras().getString("fromTime");
-        String tillTime = getIntent().getExtras().getString("tillTime");
-
-        System.out.println(rentalSlots);
-
-        for(slot s:rentalSlots){
-
-            System.out.println(s.getDescription().toString());
-        }
-
-        //create our slot elements
-        //rentalSlots.add(new slot(10, "Smith Street", "Sydney", "NSW", "A large 3 bedroom apartment right in the heart of Sydney! A rare find, with 3 bedrooms and a secured car park.", 450.00, "slot_image_1", 3, 1, 1, false));
-        //rentalSlots.add(new slot(66, "King Street", "Sydney", "NSW", "A fully furnished studio apartment overlooking the harbour. Minutes from the CBD and next to transport, this is a perfect set-up for city living.", 320.00, "slot_image_2", 1, 1, 1, false));
-        //rentalSlots.add(new slot(1, "Liverpool Road", "Liverpool", "NSW", "A standard 3 bedroom house in the suburbs. With room for several cars and right next to shops this is perfect for new families.", 360.00, "slot_image_3", 3, 2, 2, true));
-        //rentalSlots.add(new slot(567, "Sunny Street", "Gold Coast", "QLD", "Come and see this amazing studio apartment in the heart of the gold coast, featuring stunning waterfront views.", 360.00, "slot_image_4" , 1, 1, 1, false));
-
-
-/*
-        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref2;
-        ref2 = ref1.child("slot");
-
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    String time = dsp.child("availability").getValue().toString();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
-        });
-*/
-
-        // get the start and finish time
-        // get the address of each address in rentallots
-        // check their avaialbility first
-            // if pass
-                // goto booking table -> get from and till array -> check if they match
-                // remove from array
-            // if fail
-                // remove from array
-        //END
-
-
-
 
         //create our new array adapter
         ArrayAdapter<slot> adapter = new slotArrayAdapter(this, 0, rentalSlots);
@@ -177,7 +122,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
             //display trimmed excerpt for description
 
-                description.setText(slot.getDescription().toString());
+            description.setText("nothing");
 
 
             //set price and rental attributes

@@ -1,6 +1,7 @@
 package com.smt.sweettreats.paypark;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -13,6 +14,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,20 +30,25 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ApiRadius extends AppCompatActivity implements Serializable{
 
-    private TextView text, booking_time_f,booking_time_t;
+    private TextView text, booking_time_f,booking_time_t,input_booking_date;
     private EditText filter,radius;
     Radius getRadius = new Radius();
     private ArrayList<String> filteredPostcode = new ArrayList<>();
     private Button showFiltered;
     public ArrayList<slot> rentalSlots = new ArrayList<>();
     private ArrayList<slot> showFilteredArray = new ArrayList<>();
-    private ArrayList<String> availability;
+    private ArrayList<String> availability = new ArrayList<>();
+    private String line1,outcode;
+    private double price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,45 +60,127 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         filter = (EditText) findViewById(R.id.input_postcode);
         radius = (EditText) findViewById(R.id.input_radius);
 
-        showFilteredArray.clear();
-        //Get datasnapshot at your "users" root node
-        DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref2, ref3;
-        ref2 = ref1.child("slot");
-        ref3 = ref2.child("slot").child("availability");
-
-        // will populate the booking slots
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-        // Result will be holded Here
-            for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                double price = Double.valueOf(dsp.child("price").getValue().toString());
-                String outcode = dsp.child("postcode").getValue().toString();
-                dsp.child("availability");
-                for(DataSnapshot a: dsp.child("availability").getChildren()){
-                    String timeFrom = a.child("from_time").getValue().toString();
-                    String timeTill = a.child("till_time").getValue().toString();
-                    String date = a.getKey();
-                    availability = new ArrayList<>();
-                    availability.add(date);
-                    availability.add(timeFrom);
-                    availability.add(timeTill);
-                    rentalSlots.add(new slot(String.valueOf(dsp.getKey()), outcode, "London", availability, price, "driveway", 1, false));
-                }
-            }
-        }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
         showFiltered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radius.getText().toString()));
+                //Get datasnapshot at your "users" root node
+                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference ref2;
+                ref2 = ref1.child("slot");
+                // will populate the booking slots
+                ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Result will be holded Here
+                        for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                            price = Double.valueOf(dsp.child("price").getValue().toString());
+                            outcode = dsp.child("postcode").getValue().toString();
+                            dsp.child("availability");
+                            for(DataSnapshot a: dsp.child("availability").getChildren()){
+                                String timeFrom = a.child("from_time").getValue().toString();
+                                String timeTill = a.child("till_time").getValue().toString();
+                                String date = a.getKey();
+                                //System.out.println(date + input_booking_date.getText().toString());
+                                // first validation
+                                    // if the user availability matches the slot availability
+                                if(date.equals(input_booking_date.getText().toString())
+                                    && checktimings(timeFrom,booking_time_f.getText().toString())
+                                    && !checktimings(timeTill,booking_time_t.getText().toString())){
+                                    //address = String.valueOf(dsp.getKey());
+                                    System.out.println(timeFrom + timeTill);
+                                    System.out.println(booking_time_f.getText().toString());
+                                    System.out.println(booking_time_t.getText().toString());
+                                    System.out.println(outcode);
+                                    rentalSlots.add(new slot(String.valueOf(dsp.getKey()), outcode, "London", availability, price, "driveway", 1, false));
+                                    System.out.println(rentalSlots);
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+
+                DatabaseReference ref5 = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference ref6;
+
+                ref6 = ref5.child("booking");
+                ref6.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataS) {
+                        System.out.println("Working");
+
+                        System.out.println(dataS.child(input_booking_date.getText().toString()).exists());
+                        // validation
+                        availability.add("bullcrap");
+                        for (DataSnapshot dsp : dataS.getChildren()) {
+                            // if the date exists in the bookings, and date has addresses, go to next condition
+                            System.out.println("Working");
+                            System.out.println(dsp.getKey().equals(input_booking_date.getText().toString()));
+                            System.out.println(dsp.child(input_booking_date.getText().toString()).getValue()!=null);
+                            System.out.println(input_booking_date.getText().toString());
+                            System.out.println(dsp.getValue().toString());
+                            if(dsp.getKey().equals(input_booking_date.getText().toString())){
+
+
+
+                                System.out.println("Working");
+
+                                // loop through all the streets
+                                availability.add("bullcrap");
+                                System.out.println(dsp.getKey()); // HAS THE DATE
+                                for(DataSnapshot address : dsp.child(input_booking_date.getText().toString()).getChildren()){
+                                    //loop here will go through all the addresses
+                                    System.out.println(dsp.getKey()); // HAS THE ADDRESS
+
+                                    line1 = address.getKey();
+                                    if((address.getValue()!=null)){
+                                        // loop thorugh all the bookings
+                                        System.out.println(dsp.getKey());
+
+                                        for(DataSnapshot bookingID : address.getChildren()){
+                                            String timeFrom = bookingID.child("from_time").getValue().toString();
+                                            String timeTill = bookingID.child("till_time").getValue().toString();
+
+                                            System.out.println(dsp.getKey());
+
+                                            if (checktimings(timeFrom,booking_time_f.getText().toString())
+                                                    && !checktimings(timeTill,booking_time_t.getText().toString())){
+                                                // add to array
+                                                line1 = "asd";
+                                                availability.add(line1);
+                                                System.out.println(availability.toString());
+                                                System.out.println(dsp.getKey());
+
+                                                //availability.add("2");
+                                                //rentalSlots.add(new slot(line1, "HA0", "London", availability, 0.0, "driveway", 1, false));
+                                            }
+                                            // show booking
+                                            // else "No available timing"
+                                            else{
+                                                System.out.println("Nothing found");
+                                            }
+                                        }
+                                    }
+                                    // else is available
+                                }
+                            }
+                        }
+                        System.out.println(availability.toString());
+
+                        new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radius.getText().toString()));
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+
+                });
+
+
+
                 //System.out.println(rentalSlots);
                 //System.out.println(showFilteredArray);
 
@@ -140,20 +229,25 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             Type mType = new TypeToken<Radius>(){}.getType();
             getRadius = gson.fromJson(result,mType);
 
-            for (Location l: getRadius.getResult()){
-                filteredPostcode.add(l.getOutcode());
-                //System.out.println(l.getDistance());
-            }
-            for(slot s:rentalSlots){
-                System.out.println(filteredPostcode.contains(s.getOutcode()));
-                if(filteredPostcode.contains(s.getOutcode())){showFilteredArray.add(s);System.out.println(s.getOutcode());
+            if (!rentalSlots.isEmpty()){
+                for (Location l : getRadius.getResult()) {
+                    filteredPostcode.add(l.getOutcode());
+                    //System.out.println(l.getDistance());
+                }
+                for (slot s : rentalSlots) {
+                    System.out.println(filteredPostcode.contains(s.getOutcode()));
+                    System.out.println(availability.toString());
+                    if (filteredPostcode.contains(s.getOutcode())) {
+                        showFilteredArray.add(s);
+                        System.out.println(s.getOutcode());
+                    }
                 }
             }
 
             Intent intent = new Intent(ApiRadius.this, bookingListView.class);
             intent.putExtra("filteredPostcode", showFilteredArray);
-            intent.putExtra("fromTime",booking_time_f.getText().toString());
-            intent.putExtra("tillTime", booking_time_t.getText().toString());
+//            intent.putExtra("fromTime",booking_time_f.getText().toString());
+  //          intent.putExtra("tillTime", booking_time_t.getText().toString());
             startActivity(intent);
             finish();
             pd.dismiss();
@@ -219,8 +313,52 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
     /**********************************************/
 
 
+    public void selectDate(View view) {
+        DialogFragment newFragment = new ApiRadius.SelectDateFragment();
+        newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    public void populateSetDate(int year, int month, int day) {
+        input_booking_date = (TextView)findViewById(R.id.input_booking_date);
+        input_booking_date.setText(String.valueOf(String.format("%d-%d-%d",day,month,year)));
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectDateFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int yy = calendar.get(Calendar.YEAR);
+            int mm = calendar.get(Calendar.MONTH);
+            int dd = calendar.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(getActivity(), this, yy, mm, dd);
+        }
+
+        public void onDateSet(DatePicker view, int yy, int mm, int dd) {
+            populateSetDate(yy, mm+1, dd);
+        }
+    }
 
 
+    private boolean checktimings(String time, String endtime) {
+
+        String pattern = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(time);
+            Date date2 = sdf.parse(endtime);
+
+            if(date1.before(date2)) {
+                return true;
+            } else {
+
+                return false;
+            }
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
 
