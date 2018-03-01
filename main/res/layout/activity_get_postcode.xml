@@ -58,24 +58,58 @@
                 android:inputType="textWebEditText" />
         </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/drop_from"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background"
-            android:spinnerMode="dropdown"
-            android:paddingTop="20dp"
-            android:text="s"></Spinner>
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
-        <Spinner
-            android:id="@+id/drop_till"
+            <TextView
+                android:id="@+id/booking_time_f"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeFrom"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectFromTime"
+            android:text="Pick From Time" />
+
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background"
-            android:spinnerMode="dropdown"
-            android:paddingTop="20dp"
-            android:layout_marginTop="5dp"></Spinner>
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
+            <TextView
+                android:id="@+id/booking_time_t"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeTill"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectTillTime"
+            android:text="Pick End Time" />
 
 
         <!-- Lookup Button -->

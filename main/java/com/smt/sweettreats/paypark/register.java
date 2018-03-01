@@ -97,8 +97,6 @@ public class register extends AppCompatActivity {
         for(double a = 0;a<=1;a+=0.1){
                 prices.add(String.format("%.2f",a));
         }
-
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(register.this, android.R.layout.simple_spinner_item, prices);
 
         // Drop down layout style - list view with radio button
@@ -350,8 +348,9 @@ public class register extends AppCompatActivity {
         }
 
         public void populateSetTillTime(int hour, int minute) {
-            if(minute<10){input_time_from.setText(hour+":0"+minute);}
-            else{input_time_from.setText(hour+":"+minute);}
+            input_time_till = (TextView)findViewById(R.id.input_time_till);
+            if(minute<10){input_time_till.setText(hour+":0"+minute);}
+            else{input_time_till.setText(hour+":"+minute);}
         }
     }
 }

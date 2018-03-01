@@ -1,16 +1,22 @@
 package com.smt.sweettreats.paypark;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,11 +29,12 @@ import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ApiRadius extends AppCompatActivity implements Serializable{
 
-    private TextView text;
+    private TextView text, booking_time_f,booking_time_t;
     private EditText filter,radius;
     Radius getRadius = new Radius();
     private ArrayList<String> filteredPostcode = new ArrayList<>();
@@ -35,7 +42,6 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
     public ArrayList<slot> rentalSlots = new ArrayList<>();
     private ArrayList<slot> showFilteredArray = new ArrayList<>();
     private ArrayList<String> availability;
-    private Spinner spin_from,spin_till;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,6 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         showFiltered = (Button) findViewById(R.id.btn_showbooking);
         filter = (EditText) findViewById(R.id.input_postcode);
         radius = (EditText) findViewById(R.id.input_radius);
-        spin_from = (Spinner) findViewById(R.id.drop_from);
-        spin_till = (Spinner) findViewById(R.id.drop_till);
 
         showFilteredArray.clear();
         //Get datasnapshot at your "users" root node
@@ -94,33 +98,11 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             }
 
         });
-        System.out.println(showFilteredArray);
 
-        List<String> hours = new ArrayList<>();
-
-
-        // populate with the hours and minutes
-        // time interval of 10 minutes
-        for(int a = 0;a<=23;a++){
-            for(int b = 00;b<=50;b+=10){
-                if(b == 0){hours.add(String.valueOf(a)+":"+String.valueOf(b)+"0");}
-                else{hours.add(String.valueOf(a)+":"+String.valueOf(b));}
-            }
-        }
-
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ApiRadius.this, android.R.layout.simple_spinner_item, hours);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spin_from.setAdapter(dataAdapter);
-        spin_till.setAdapter(dataAdapter);
     }
 
 
-
+/* class that does all the Radius work and display to the next page */
             private class getPostCodeinRadius extends AsyncTask<String,Void,String> {
         ProgressDialog pd = new ProgressDialog(ApiRadius.this);
 
@@ -170,8 +152,8 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
             Intent intent = new Intent(ApiRadius.this, bookingListView.class);
             intent.putExtra("filteredPostcode", showFilteredArray);
-            intent.putExtra("fromTime",spin_from.getSelectedItem().toString());
-            intent.putExtra("tillTime", spin_till.getSelectedItem().toString());
+            intent.putExtra("fromTime",booking_time_f.getText().toString());
+            intent.putExtra("tillTime", booking_time_t.getText().toString());
             startActivity(intent);
             finish();
             pd.dismiss();
@@ -180,6 +162,65 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             //System.out.println(postcode.getAddress());
         }
     }
+    /* Classes in charge of Time click */
+
+    public void selectFromTime(View view) {
+        DialogFragment newFragment = new ApiRadius.SelectFromTimeFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectFromTimeFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int hh = calendar.get(Calendar.HOUR_OF_DAY);
+            int m = calendar.get(Calendar.MINUTE);
+            return new TimePickerDialog(getActivity(), this, hh, m, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            populateSetFromTime(i,i1);
+        }
+
+        public void populateSetFromTime(int hour, int minute) {
+            booking_time_f = (TextView)findViewById(R.id.booking_time_f);
+            if(minute<10){booking_time_f.setText(hour+":0"+minute);}
+            else{booking_time_f.setText(hour+":"+minute);}
+        }
+    }
+
+
+    public void selectTillTime(View view) {
+        DialogFragment newFragment = new ApiRadius.SelectTillTimeFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
+    @SuppressLint("ValidFragment")
+    public class SelectTillTimeFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int hh = calendar.get(Calendar.HOUR_OF_DAY);
+            int m = calendar.get(Calendar.MINUTE);
+            return new TimePickerDialog(getActivity(), this, hh, m, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        @Override
+        public void onTimeSet(TimePicker timePicker, int i, int i1) {
+            populateSetTillTime(i,i1);
+        }
+
+        public void populateSetTillTime(int hour, int minute) {
+            booking_time_t = (TextView)findViewById(R.id.booking_time_t);
+            if(minute<10){booking_time_t.setText(hour+":0"+minute);}
+            else{booking_time_t.setText(hour+":"+minute);}
+        }
+    }
+    /**********************************************/
+
+
+
+
 }
 
 
