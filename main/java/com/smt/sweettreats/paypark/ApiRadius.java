@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,10 +86,10 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                                 String date = a.getKey();
                                 //System.out.println(date + input_booking_date.getText().toString());
                                 // first validation
-                                    // if the user availability matches the slot availability
+                                // if the user availability matches the slot availability
                                 if(date.equals(input_booking_date.getText().toString())
-                                    && checktimings(timeFrom,booking_time_f.getText().toString())
-                                    && !checktimings(timeTill,booking_time_t.getText().toString())){
+                                        && checktimings(timeFrom,booking_time_f.getText().toString())
+                                        && !checktimings(timeTill,booking_time_t.getText().toString())){
                                     //address = String.valueOf(dsp.getKey());
                                     System.out.println(timeFrom + timeTill);
                                     System.out.println(booking_time_f.getText().toString());
@@ -116,7 +118,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
                         System.out.println(dataS.child(input_booking_date.getText().toString()).exists());
                         // validation
-                        availability.add("bullcrap");
+                        //availability.add("1 Buckingham Road");
 
                         // if the table has the date
                         if(dataS.child(input_booking_date.getText().toString()).exists()) {
@@ -133,17 +135,17 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
                                 // loop through all the bookingID
                                 for (DataSnapshot bookingID : dsp.getChildren()) {
-                                        //loop here will go through all the addresses
-                                        System.out.println(dsp.getKey()); // has the ID
-                                        String from = bookingID.child("from_time").getValue().toString();
-                                        String till = bookingID.child("till_time").getValue().toString();
-                                        // if checkTimings
+                                    //loop here will go through all the addresses
+                                    System.out.println(dsp.getKey()); // has the ID
+                                    String from = bookingID.child("from_time").getValue().toString();
+                                    String till = bookingID.child("till_time").getValue().toString();
+                                    // if checkTimings
                                     if(checktimings(from,booking_time_f.getText().toString())
                                             && !checktimings(till,booking_time_t.getText().toString())){
                                         availability.add(line1);
                                     }
-                                    }
                                 }
+                            }
                         }
                         System.out.println(availability.toString());
 
@@ -155,13 +157,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
                 });
 
-                for(slot s:rentalSlots){
 
-                    if(!availability.contains(s.getStreetName())){
-                        rentalSlotsUpdated.add(s);
-                    }
-
-                }
 
                 //System.out.println(rentalSlots);
                 //System.out.println(showFilteredArray);
@@ -173,15 +169,15 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
     }
 
 
-/* class that does all the Radius work and display to the next page */
-            private class getPostCodeinRadius extends AsyncTask<String,Void,String> {
+    /* class that does all the Radius work and display to the next page */
+    private class getPostCodeinRadius extends AsyncTask<String,Void,String> {
         ProgressDialog pd = new ProgressDialog(ApiRadius.this);
 
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd.setTitle("Please wait...");
+            pd.setTitle("Looking for slots...");
             pd.show();
         }
 
@@ -211,6 +207,25 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             Type mType = new TypeToken<Radius>(){}.getType();
             getRadius = gson.fromJson(result,mType);
 
+            Log.d("heyhere2",rentalSlots.toString());
+            Log.d("heyhere2",availability.toString());
+
+
+            // toDelete contains 1 bam
+            // rental has 5 bam
+            for(slot s:rentalSlots){
+                Log.d("check","if has run");
+                if(!availability.contains(s.getStreetName())){
+                    // if contains then dont add
+                    Log.d("check","if has run");
+                    rentalSlotsUpdated.add(s);
+
+                }
+
+            }
+
+
+
             if (!rentalSlotsUpdated.isEmpty()){
                 for (Location l : getRadius.getResult()) {
                     filteredPostcode.add(l.getOutcode());
@@ -226,20 +241,23 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                 }
             }
 
-            Intent intent = new Intent(ApiRadius.this, bookingListView.class);
-            intent.putExtra("filteredPostcode", showFilteredArray);
-            intent.putExtra("from", booking_time_f.getText().toString());
-            intent.putExtra("till", booking_time_t.getText().toString());
-            intent.putExtra("till", input_booking_date.getText().toString());
+            if(!showFilteredArray.isEmpty()) {
+                Intent intent = new Intent(ApiRadius.this, bookingListView.class);
+                intent.putExtra("filteredPostcode", showFilteredArray);
+                Log.d("hey", rentalSlotsUpdated.toString());
+                intent.putExtra("from", booking_time_f.getText().toString());
+                intent.putExtra("till", booking_time_t.getText().toString());
+                intent.putExtra("date", input_booking_date.getText().toString());
 
+                startActivity(intent);
+                finish();
+                pd.dismiss();
+            }else{
 
-
-//            intent.putExtra("fromTime",booking_time_f.getText().toString());
-  //          intent.putExtra("tillTime", booking_time_t.getText().toString());
-            startActivity(intent);
-            finish();
-            pd.dismiss();
-
+                Toast.makeText(ApiRadius.this, "No slots found, change your filters.",
+                        Toast.LENGTH_LONG).show();
+                pd.dismiss();
+            }
             //System.out.println(postcode.getLatitude());
             //System.out.println(postcode.getAddress());
         }

@@ -63,7 +63,7 @@ public class login extends AppCompatActivity {
 
 
                             mProgress.setMessage("You are logged in!");
-                            session.createLoginSession(edit_usr.getText().toString(),"email");
+                            session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString());
 
 
                             Toast.makeText(login.this, "You are logged in",

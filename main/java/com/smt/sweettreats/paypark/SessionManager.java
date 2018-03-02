@@ -35,7 +35,7 @@ public class SessionManager{
     //public static final String KEY_NAME = "name";
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
+    public static final String KEY_EMAIL = "id";
 
     // Constructor
     public SessionManager(Context context){

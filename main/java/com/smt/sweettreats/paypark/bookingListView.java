@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,10 @@ public class bookingListView extends AppCompatActivity implements Serializable{
         final String fromTime = getIntent().getExtras().getString("from");
         final String tillTime = getIntent().getExtras().getString("till");
         final String date = getIntent().getExtras().getString("date");
+        System.out.println(rentalSlots);
+        Log.d("MyApp","I am here");
+        Log.d("hey",rentalSlots.toString());
+
 
 
 
@@ -66,9 +71,9 @@ public class bookingListView extends AppCompatActivity implements Serializable{
                 intent.putExtra("address", slot.getStreetName()); //address bookable
                 intent.putExtra("outcode", slot.getOutcode()); // postcode
                 intent.putExtra("price",slot.getPrice()); // price per hour for booking
-                intent.putExtra("from", date); //address bookable
-                intent.putExtra("till", fromTime); // postcode
-                intent.putExtra("date",tillTime); // price per hour for booking
+                intent.putExtra("from", fromTime); //address bookable
+                intent.putExtra("till", tillTime); // postcode
+                intent.putExtra("date",date); // price per hour for booking
                 System.out.println("asdsd");
                 System.out.println(slot.getStreetName());
                 //intent.putExtra("state", slot.getState());

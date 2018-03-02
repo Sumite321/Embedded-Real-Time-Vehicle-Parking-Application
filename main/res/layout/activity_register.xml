@@ -221,6 +221,8 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
             android:padding="12dp"
+           android:background="@drawable/buttom"
+
             android:text="Next" />
 
 
