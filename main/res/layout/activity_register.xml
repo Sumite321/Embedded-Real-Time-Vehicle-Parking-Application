@@ -13,7 +13,7 @@
         android:paddingTop="0dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:layout_margin="40dp"
+        android:layout_margin="30dp"
 
         android:background="@drawable/roundbutton">
 
@@ -188,26 +188,43 @@
             android:spinnerMode="dropdown"
             android:paddingTop="20dp"
             ></Spinner>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
+
+            <TextView
+                android:id="@+id/link_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Already registed? Login"
+                android:inputType="textPostalAddress"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+
         <!-- Signup Button -->
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_nxt"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:padding="12dp"
             android:text="Next" />
 
 
-        <!-- Member already Button -->
-        <TextView android:id="@+id/link_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
-            android:gravity="center"
-            android:textSize="16dip"/>
+
 
     </LinearLayout>
 </ScrollView>

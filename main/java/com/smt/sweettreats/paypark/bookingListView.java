@@ -39,6 +39,11 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
 
         rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("filteredPostcode");
+        final String fromTime = getIntent().getExtras().getString("from");
+        final String tillTime = getIntent().getExtras().getString("till");
+        final String date = getIntent().getExtras().getString("date");
+
+
 
         //create our new array adapter
         ArrayAdapter<slot> adapter = new slotArrayAdapter(this, 0, rentalSlots);
@@ -61,6 +66,9 @@ public class bookingListView extends AppCompatActivity implements Serializable{
                 intent.putExtra("address", slot.getStreetName()); //address bookable
                 intent.putExtra("outcode", slot.getOutcode()); // postcode
                 intent.putExtra("price",slot.getPrice()); // price per hour for booking
+                intent.putExtra("from", date); //address bookable
+                intent.putExtra("till", fromTime); // postcode
+                intent.putExtra("date",tillTime); // price per hour for booking
                 System.out.println("asdsd");
                 System.out.println(slot.getStreetName());
                 //intent.putExtra("state", slot.getState());
@@ -122,7 +130,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
             //display trimmed excerpt for description
 
-            description.setText("nothing");
+            description.setText("WIll contain sensor information");
 
 
             //set price and rental attributes

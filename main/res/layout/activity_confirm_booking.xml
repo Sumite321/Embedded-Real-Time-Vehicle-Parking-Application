@@ -78,6 +78,30 @@
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/title3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="Price"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="" />
+    </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
@@ -85,15 +109,15 @@
             android:layout_marginTop="20dp">
 
             <TextView
-                android:id="@+id/title3"
+                android:id="@+id/title4"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:gravity="left"
-                android:text="Price"
+                android:text="Date"
                 android:textSize="24sp" />
             <TextView
-                android:id="@+id/price"
+                android:id="@+id/textDate"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -101,6 +125,53 @@
                 android:text="" />
         </LinearLayout>
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/title5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="From"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/textFrom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="" />
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/title6"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="Till"
+                android:textSize="24sp" />
+            <TextView
+                android:id="@+id/textTill"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="left"
+                android:text="" />
+        </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_nxt"

@@ -1,6 +1,8 @@
 package com.smt.sweettreats.paypark;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 public class login extends AppCompatActivity {
 
@@ -23,13 +27,14 @@ public class login extends AppCompatActivity {
     private DatabaseReference ref;
     private ProgressDialog mProgress;
     private EditText edit_usr, edit_pw;
+    public static SessionManager session;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        session = new SessionManager(getApplicationContext());
         ref = FirebaseDatabase.getInstance().getReference();
 
         mProgress = new ProgressDialog(login.this);
@@ -57,13 +62,23 @@ public class login extends AppCompatActivity {
                             //tv.setText("You are logged in");
 
 
-                            edit_usr.setText("You are found");
                             mProgress.setMessage("You are logged in!");
+                            session.createLoginSession(edit_usr.getText().toString(),"email");
+
+
+                            Toast.makeText(login.this, "You are logged in",
+                                    Toast.LENGTH_LONG).show();
                             mProgress.setCancelable(true);
+
+                            Intent intent = new Intent(login.this,LoginHome.class);
+                            startActivity(intent);
+                            finish();
                         } else {
-                            edit_usr.setText("You are not found");
                             mProgress.setMessage("You are not logged in!");
                             mProgress.setCancelable(true);
+                            Toast.makeText(login.this, "Check your credentials",
+                                    Toast.LENGTH_LONG).show();
+
                             //user does not exist, do something else
                            // tv.setText("You are not logged in");
                         }

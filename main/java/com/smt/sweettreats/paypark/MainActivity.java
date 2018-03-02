@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         toBook = (Button) findViewById(R.id.suite2);
 
 
+
+
+
+
         toRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

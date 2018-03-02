@@ -228,6 +228,12 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
             Intent intent = new Intent(ApiRadius.this, bookingListView.class);
             intent.putExtra("filteredPostcode", showFilteredArray);
+            intent.putExtra("from", booking_time_f.getText().toString());
+            intent.putExtra("till", booking_time_t.getText().toString());
+            intent.putExtra("till", input_booking_date.getText().toString());
+
+
+
 //            intent.putExtra("fromTime",booking_time_f.getText().toString());
   //          intent.putExtra("tillTime", booking_time_t.getText().toString());
             startActivity(intent);
