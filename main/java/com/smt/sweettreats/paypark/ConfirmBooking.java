@@ -1,7 +1,10 @@
 package com.smt.sweettreats.paypark;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -14,6 +17,7 @@ public class ConfirmBooking extends AppCompatActivity {
     private TextView address,price,duration,from, till, date,total;
     private double priceTotal;
     private int time;
+    private Button checkout;
 
 
     @Override
@@ -29,7 +33,7 @@ public class ConfirmBooking extends AppCompatActivity {
         till = (TextView) findViewById(R.id.textTill);
         date = (TextView) findViewById(R.id.textDate);
         total = (TextView) findViewById(R.id.textTotal);
-
+        checkout = (Button) findViewById(R.id.btn_checkout);
 
 
         String addressData = getIntent().getExtras().getString("address");
@@ -53,6 +57,14 @@ public class ConfirmBooking extends AppCompatActivity {
         till.setText(tillTime);
         date.setText(dateV);
         total.setText(String.format("£ %.2f", priceTotal,"0"));
+
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ConfirmBooking.this, AboutYou.class));
+
+            }
+        });
 
 
 

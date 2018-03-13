@@ -54,10 +54,33 @@
                 android:id="@+id/input_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Radius"
+                android:hint="Radius in meters"
                 android:inputType="textWebEditText" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/radius_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Prefered radius in meteres"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinner_radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:spinnerMode="dropdown"
+            android:paddingTop="20dp"
+            ></Spinner>
 
 
         <android.support.design.widget.TextInputLayout
@@ -65,12 +88,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-        <TextView
-            android:id="@+id/input_booking_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Date"
-            android:inputType="textPostalAddress" />
+
+            <TextView
+                android:id="@+id/input_booking_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
@@ -95,8 +120,9 @@
                 android:id="@+id/booking_time_f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Date"
-                android:inputType="textPostalAddress" />
+                android:hint="Time"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -122,8 +148,9 @@
                 android:id="@+id/booking_time_t"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Date"
-                android:inputType="textPostalAddress" />
+                android:hint="Time"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton

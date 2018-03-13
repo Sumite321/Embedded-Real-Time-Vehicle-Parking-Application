@@ -95,7 +95,7 @@ public class register extends AppCompatActivity {
         // populate with the hours and minutes
         // time interval of 10 minutes
         for(double a = 0;a<=1;a+=0.1){
-                prices.add(String.format("%.2f",a));
+                prices.add(String.format("£%.2f",a));
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(register.this, android.R.layout.simple_spinner_item, prices);
 
@@ -154,6 +154,8 @@ public class register extends AppCompatActivity {
 
                         // get the price
                         String priceHour = spin_prices.getSelectedItem().toString();
+                        int convertToMeters = Integer.valueOf(priceHour) * 1000;
+                        priceHour = String.valueOf(convertToMeters);
 
                         DatabaseReference usersName = database.getReference("users")
                                 .child(String.valueOf(key))

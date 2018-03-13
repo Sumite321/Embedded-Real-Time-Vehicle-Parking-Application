@@ -43,6 +43,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
     private TextView text, booking_time_f,booking_time_t,input_booking_date;
     private EditText filter,radius;
+    private Spinner radiusS;
     Radius getRadius = new Radius();
     private ArrayList<String> filteredPostcode = new ArrayList<>();
     private Button showFiltered;
@@ -62,6 +63,30 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         showFiltered = (Button) findViewById(R.id.btn_showbooking);
         filter = (EditText) findViewById(R.id.input_postcode);
         radius = (EditText) findViewById(R.id.input_radius);
+        radiusS = (Spinner) findViewById(R.id.spinner_radius);
+
+
+        List<String> radiusList = new ArrayList<>();
+
+
+        // populate with the hours and minutes
+        // time interval of 10 minutes
+
+        radiusList.add("0");
+        radiusList.add("1000");
+        radiusList.add("2000");
+        radiusList.add("3000");
+        radiusList.add("4000");
+
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ApiRadius.this, android.R.layout.simple_spinner_item, radiusList);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        radiusS.setAdapter(dataAdapter);
+
 
         showFiltered.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,11 +238,15 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
             // toDelete contains 1 bam
             // rental has 5 bam
+
+            // in here this loop will go through the rental slots and add to rentalSlotsUpdated only the ones availability doesnt have
             for(slot s:rentalSlots){
                 Log.d("check","if has run");
                 if(!availability.contains(s.getStreetName())){
                     // if contains then dont add
-                    Log.d("check","if has run");
+                    Log.d("check2","if has run");
+                    Log.d("checkifRentalSlots",rentalSlotsUpdated.toString());
+
                     rentalSlotsUpdated.add(s);
 
                 }
@@ -225,13 +254,18 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
             }
 
 
-
+            // checking if rentalSlots is not empty
             if (!rentalSlotsUpdated.isEmpty()){
+                Log.d("check3","rental is not empty");
+
                 for (Location l : getRadius.getResult()) {
+                    // add all the outcodes in radius
+                    Log.d("checkRadiusOutcode",l.getOutcode());
                     filteredPostcode.add(l.getOutcode());
-                    //System.out.println(l.getDistance());
+                    Log.d("checkRFilteredPostcode",filteredPostcode.toString());
                 }
                 for (slot s : rentalSlotsUpdated) {
+                    Log.d("checkSlotOutcode",s.getOutcode());
                     System.out.println(filteredPostcode.contains(s.getOutcode()));
                     System.out.println(availability.toString());
                     if (filteredPostcode.contains(s.getOutcode())) {
