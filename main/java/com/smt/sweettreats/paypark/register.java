@@ -154,8 +154,8 @@ public class register extends AppCompatActivity {
 
                         // get the price
                         String priceHour = spin_prices.getSelectedItem().toString();
-                        int convertToMeters = Integer.valueOf(priceHour) * 1000;
-                        priceHour = String.valueOf(convertToMeters);
+                        priceHour = priceHour.substring(1, priceHour.length());
+
 
                         DatabaseReference usersName = database.getReference("users")
                                 .child(String.valueOf(key))

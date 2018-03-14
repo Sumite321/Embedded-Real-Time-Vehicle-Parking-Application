@@ -59,10 +59,10 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_postcode);
 
-        text = (TextView) findViewById(R.id.postcode_search);
+        //text = (TextView) findViewById(R.id.postcode_search);
         showFiltered = (Button) findViewById(R.id.btn_showbooking);
         filter = (EditText) findViewById(R.id.input_postcode);
-        radius = (EditText) findViewById(R.id.input_radius);
+        //radius = (EditText) findViewById(R.id.input_radius);
         radiusS = (Spinner) findViewById(R.id.spinner_radius);
 
 
@@ -78,6 +78,8 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         radiusList.add("3000");
         radiusList.add("4000");
 
+        //int convertToMeters = Integer.valueOf(radiusS.getSelectedItem().toString()) * 1000;
+        //String radius = String.valueOf(convertToMeters);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ApiRadius.this, android.R.layout.simple_spinner_item, radiusList);
 
@@ -174,7 +176,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                         }
                         System.out.println(availability.toString());
 
-                        new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radius.getText().toString()));
+                        new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radiusS.getSelectedItem().toString()));
 
                     }
                     @Override
