@@ -51,12 +51,12 @@ public class ConfirmBooking extends AppCompatActivity {
         }
 
         address.setText(addressData);
-        price.setText(priceData.toString());
-        duration.setText(String.format("%d", time,"Minutes"));
+        price.setText(String.format("£ %s0",priceData.toString()));
+        duration.setText(String.format("%d minutes", time));
         from.setText(fromTime);
         till.setText(tillTime);
         date.setText(dateV);
-        total.setText(String.format("£ %.2f", priceTotal,"0"));
+        total.setText(String.format("£ %.2f0", priceTotal));
 
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
