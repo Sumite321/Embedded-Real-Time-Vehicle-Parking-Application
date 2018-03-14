@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/home1">
+    android:background="@android:color/holo_blue_dark">
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,12 +23,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
+            android:fontFamily="serif-monospace"
             android:gravity="center"
             android:paddingTop="30dp"
             android:text="Welcome"
             android:textAllCaps="true"
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="15sp" />
+            android:textSize="50sp"
+            android:typeface="sans" />
 
         <TextView
             android:id="@+id/sessionUser"
@@ -51,10 +53,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="20dp"
             android:padding="12dp"
             android:background="@drawable/buttom"
-
+            android:textColor="@android:color/holo_blue_dark"
             android:text="View Bookings" />
 
         <!-- Signup Button -->
@@ -67,6 +69,7 @@
             android:padding="12dp"
             android:background="@drawable/buttom"
 
+            android:textColor="@android:color/holo_blue_dark"
             android:text="Reserve a driveway"
             />
 
@@ -81,6 +84,7 @@
             android:padding="12dp"
             android:background="@drawable/buttom"
 
+            android:textColor="@android:color/holo_blue_dark"
             android:text="Rent my driveway" />
 
         <android.support.v7.widget.AppCompatButton
@@ -92,6 +96,7 @@
             android:padding="12dp"
             android:background="@drawable/buttom"
 
+            android:textColor="@android:color/holo_blue_dark"
             android:text="Pair Sensor" />
 
         <android.support.v7.widget.AppCompatButton

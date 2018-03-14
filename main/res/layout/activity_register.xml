@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/home1">
+    android:background="@android:color/holo_blue_dark">
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,7 +13,7 @@
         android:paddingTop="0dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:layout_margin="20dp"
+        android:layout_margin="40dp"
 
         android:background="@drawable/roundbutton">
 
@@ -86,6 +86,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="0dp"
             android:background="@android:color/holo_blue_dark"
+            android:textColor="@android:color/background_light"
             android:elevation="0dp"
             android:padding="1dp"
             android:text="Find address" />
@@ -123,6 +124,7 @@
             android:elevation="0dp"
             android:padding="1dp"
             android:onClick="selectDate"
+            android:textColor="@android:color/background_light"
             android:text="Pick Date" />
 
 
@@ -152,6 +154,7 @@
             android:elevation="0dp"
             android:padding="1dp"
             android:onClick="selectFromTime"
+            android:textColor="@android:color/background_light"
             android:text="Pick From Time" />
 
 
@@ -181,6 +184,7 @@
             android:elevation="0dp"
             android:padding="1dp"
             android:onClick="selectTillTime"
+            android:textColor="@android:color/background_light"
             android:text="Pick End Time" />
 
 
@@ -236,16 +240,18 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
+            android:background="@drawable/buttom"
             android:padding="12dp"
-           android:background="@drawable/buttom"
+            android:text="Next"
 
-            android:text="Next" />
+            android:textColor="@android:color/holo_blue_light"
+            android:textStyle="bold" />
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="0dp">
 
             <TextView
