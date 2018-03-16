@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ConfirmBooking extends AppCompatActivity {
 
@@ -18,6 +20,7 @@ public class ConfirmBooking extends AppCompatActivity {
     private double priceTotal;
     private int time;
     private Button checkout;
+    static List<String> slotDetails = new ArrayList<>();
 
 
     @Override
@@ -36,12 +39,12 @@ public class ConfirmBooking extends AppCompatActivity {
         checkout = (Button) findViewById(R.id.btn_checkout);
 
 
-        String addressData = getIntent().getExtras().getString("address");
-        Double priceData = getIntent().getExtras().getDouble("price");
+        final String addressData = getIntent().getExtras().getString("address");
+        final Double priceData = getIntent().getExtras().getDouble("price");
         String outcodeData = getIntent().getExtras().getString("outcode");
-        String fromTime = getIntent().getExtras().getString("from");
-        String tillTime = getIntent().getExtras().getString("till");
-        String dateV = getIntent().getExtras().getString("date");
+        final String fromTime = getIntent().getExtras().getString("from");
+        final String tillTime = getIntent().getExtras().getString("till");
+        final String dateV = getIntent().getExtras().getString("date");
 
         try {
             time = differenceTime(fromTime, tillTime);
@@ -61,6 +64,12 @@ public class ConfirmBooking extends AppCompatActivity {
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                slotDetails.add(addressData);
+                slotDetails.add(priceData.toString());
+                slotDetails.add(fromTime);
+                slotDetails.add(tillTime);
+                slotDetails.add(dateV);
+                slotDetails.add(String.format("£ %.2f0", priceTotal));
                 startActivity(new Intent(ConfirmBooking.this, AboutYou.class));
 
             }

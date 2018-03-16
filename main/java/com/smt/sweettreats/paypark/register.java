@@ -196,7 +196,8 @@ public class register extends AppCompatActivity {
                                 .child(addressLine1[0])
                                 .child("postcode");
                         String outcode = postData.getText().toString();
-                        slotOutcode.setValue(outcode.substring(0, outcode.length() - 3));
+
+                        slotOutcode.setValue(outcode.substring(0, outcode.length() - 3).toUpperCase());
 
                         startActivity(new Intent(register.this,register_username.class));
                         finish();
