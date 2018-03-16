@@ -63,6 +63,7 @@ public class register extends AppCompatActivity {
     private Button search,next;
     public Spinner spinner,spin_prices;
     private TextView loginLink, myName, myEmail, input_date,input_time_from,input_time_till;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,11 @@ public class register extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pd = new ProgressDialog(register.this);
+                pd.setTitle("Validating...");
+                pd.show();
+
+
                 // get the current ID registered
                 DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("users");
                 mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -199,6 +205,8 @@ public class register extends AppCompatActivity {
 
                         slotOutcode.setValue(outcode.substring(0, outcode.length() - 3).toUpperCase());
 
+                        pd.dismiss();
+
                         startActivity(new Intent(register.this,register_username.class));
                         finish();
                     }
@@ -220,7 +228,7 @@ public class register extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd.setTitle("Please wait...");
+            pd.setTitle("Looking for postcode...");
             pd.show();
         }
 
@@ -242,11 +250,15 @@ public class register extends AppCompatActivity {
 
             if(result == null){
                 pd.dismiss();
-                System.out.println("No bull found");
+                Toast.makeText(register.this, String.format("Postcode not found"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
 
+            // get the json file
             Gson gson = new Gson();
+
+            //use reflection to reflect the json file to entities
             Type mType = new TypeToken<Location>(){}.getType();
             postcode = gson.fromJson(result,mType);
             System.out.print(postcode);
@@ -261,12 +273,8 @@ public class register extends AppCompatActivity {
 
             // attaching data adapter to spinner
             spinner.setAdapter(dataAdapter);
-
-
-
-
-
-
+            Toast.makeText(register.this, String.format("Found .%d slots available", postcode.getAddress().size()),
+                    Toast.LENGTH_LONG).show();
             pd.dismiss();
 
             //System.out.println(postcode.getLatitude());

@@ -1,5 +1,6 @@
 package com.smt.sweettreats.paypark;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class register_username extends AppCompatActivity {
 
     private Button next;
     private TextView myUsr,myPw;
+    private ProgressDialog pd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,8 @@ public class register_username extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pd.setTitle("Validating...");
+                pd.show();
                 // get the current ID registered
                 DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("users");
                 mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -62,7 +66,7 @@ public class register_username extends AppCompatActivity {
                                 .child(username)
                                 .child("ID");
                         loginValue.setValue(String.valueOf(key));
-
+                        pd.dismiss();
                         // myUsr.setText(key1);
 
                         startActivity(new Intent(register_username.this, success.class));

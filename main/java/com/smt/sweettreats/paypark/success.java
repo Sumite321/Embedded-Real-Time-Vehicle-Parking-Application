@@ -37,6 +37,16 @@ public class success extends AppCompatActivity {
         login = (Button) findViewById(R.id.btn_loginow);
         text = (TextView) findViewById(R.id.registered);
 
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(success.this,login.class));
+            }
+        });
+
+
+
     }
 
 

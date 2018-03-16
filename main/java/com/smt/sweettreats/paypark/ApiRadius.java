@@ -204,8 +204,8 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pd.setTitle("Looking for slots...");
-            pd.show();
+                    pd.setTitle("Looking for slots...");
+                    pd.show();
         }
 
         @Override
@@ -284,8 +284,10 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                 intent.putExtra("from", booking_time_f.getText().toString());
                 intent.putExtra("till", booking_time_t.getText().toString());
                 intent.putExtra("date", input_booking_date.getText().toString());
+                Toast.makeText(ApiRadius.this, String.format("Found .%d slots available", showFilteredArray.size()),
+                        Toast.LENGTH_LONG).show();
 
-                startActivity(intent);
+                        startActivity(intent);
                 finish();
                 pd.dismiss();
             }else{
