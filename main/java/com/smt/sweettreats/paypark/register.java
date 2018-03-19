@@ -205,8 +205,8 @@ public class register extends AppCompatActivity {
 
                         slotOutcode.setValue(outcode.substring(0, outcode.length() - 3).toUpperCase());
 
-                        pd.dismiss();
-
+                        Toast.makeText(register.this, String.format("Slot registered"),
+                                Toast.LENGTH_LONG).show();
                         startActivity(new Intent(register.this,register_username.class));
                         finish();
                     }
@@ -273,7 +273,7 @@ public class register extends AppCompatActivity {
 
             // attaching data adapter to spinner
             spinner.setAdapter(dataAdapter);
-            Toast.makeText(register.this, String.format("Found .%d slots available", postcode.getAddress().size()),
+            Toast.makeText(register.this, String.format("Found %d postcode", postcode.getAddress().size()),
                     Toast.LENGTH_LONG).show();
             pd.dismiss();
 

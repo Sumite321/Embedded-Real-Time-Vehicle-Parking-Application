@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,7 +19,7 @@ public class register_username extends AppCompatActivity {
 
     private Button next;
     private TextView myUsr,myPw;
-    private ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +32,7 @@ public class register_username extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pd.setTitle("Validating...");
-                pd.show();
+
                 // get the current ID registered
                 DatabaseReference mDatabasePlayers = FirebaseDatabase.getInstance().getReference().child("users");
                 mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,7 +66,8 @@ public class register_username extends AppCompatActivity {
                                 .child(username)
                                 .child("ID");
                         loginValue.setValue(String.valueOf(key));
-                        pd.dismiss();
+                        Toast.makeText(register_username.this, String.format("User registered"),
+                                Toast.LENGTH_LONG).show();
                         // myUsr.setText(key1);
 
                         startActivity(new Intent(register_username.this, success.class));

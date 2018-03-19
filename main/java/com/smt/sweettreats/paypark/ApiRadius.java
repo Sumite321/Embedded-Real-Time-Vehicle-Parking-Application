@@ -176,7 +176,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                         }
                         System.out.println(availability.toString());
 
-                        new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString(),radiusS.getSelectedItem().toString()));
+                        new ApiRadius.getPostCodeinRadius().execute(Common.apiRadius(filter.getText().toString().toUpperCase(),radiusS.getSelectedItem().toString()));
 
                     }
                     @Override
@@ -284,7 +284,7 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
                 intent.putExtra("from", booking_time_f.getText().toString());
                 intent.putExtra("till", booking_time_t.getText().toString());
                 intent.putExtra("date", input_booking_date.getText().toString());
-                Toast.makeText(ApiRadius.this, String.format("Found .%d slots available", showFilteredArray.size()),
+                Toast.makeText(ApiRadius.this, String.format("Found %d slots available", showFilteredArray.size()),
                         Toast.LENGTH_LONG).show();
 
                         startActivity(intent);

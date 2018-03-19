@@ -28,8 +28,6 @@ public class Location {
     }
 
     public Location(String lat, String lon, List<String> addresses){
-
-
         this.addresses = addresses;
         this.latitude = lat;
         this.longitude = lon;

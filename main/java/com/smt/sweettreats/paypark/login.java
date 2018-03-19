@@ -39,7 +39,7 @@ public class login extends AppCompatActivity {
 
         mProgress = new ProgressDialog(login.this);
         mProgress.setTitle("Processing...");
-        mProgress.setMessage("Please wait...");
+        mProgress.setMessage("Logging you in...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
 
@@ -62,23 +62,23 @@ public class login extends AppCompatActivity {
                             //tv.setText("You are logged in");
 
 
-                            mProgress.setMessage("You are logged in!");
+
                             session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString());
 
 
-                            Toast.makeText(login.this, "You are logged in",
+                            Toast.makeText(login.this, "Successfuly logged in",
                                     Toast.LENGTH_LONG).show();
-                            mProgress.setCancelable(true);
+
 
                             Intent intent = new Intent(login.this,LoginHome.class);
+                            mProgress.dismiss();
                             startActivity(intent);
                             finish();
                         } else {
-                            mProgress.setMessage("You are not logged in!");
-                            mProgress.setCancelable(true);
+
                             Toast.makeText(login.this, "Check your credentials",
                                     Toast.LENGTH_LONG).show();
-
+                            mProgress.dismiss();
                             //user does not exist, do something else
                            // tv.setText("You are not logged in");
                         }
