@@ -29,7 +29,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
     public ArrayList<slot> rentalSlots = new ArrayList<>();
     private ListView mListView;
-    private boolean available;
+    private boolean available, isRentals;
 
 
     @Override
@@ -38,8 +38,15 @@ public class bookingListView extends AppCompatActivity implements Serializable{
         setContentView(R.layout.activity_booking_list_view);
 
 
+        isRentals = (Boolean) getIntent().getSerializableExtra("rentals");
 
-        rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("filteredPostcode");
+        if(isRentals) {
+
+            rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("filteredPostcode");
+        }else{
+
+            rentalSlots = (ArrayList<slot>) getIntent().getSerializableExtra("showBooking");
+        }
         final String fromTime = getIntent().getExtras().getString("from");
         final String tillTime = getIntent().getExtras().getString("till");
         final String date = getIntent().getExtras().getString("date");
@@ -113,42 +120,66 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
             //conditionally inflate either standard or special template
             View view;
+            view = inflater.inflate(R.layout.slot_layout, null);
+
+            /*
             if(slot.getFeatured() == true){
                 view = inflater.inflate(R.layout.slot_layout_alt, null);
             }else{
                 view = inflater.inflate(R.layout.slot_layout, null);
-            }
+            }*/
 
 
             TextView description = (TextView) view.findViewById(R.id.description);// format From,Till -> [13,19]
             TextView address = (TextView) view.findViewById(R.id.address);
-            //TextView bedroom = (TextView) view.findViewById(R.id.bedroom);
-            //TextView bathroom = (TextView) view.findViewById(R.id.bathroom);
+            TextView bedroom = (TextView) view.findViewById(R.id.bedroom);
+            TextView bathroom = (TextView) view.findViewById(R.id.bathroom);
             TextView carspot = (TextView) view.findViewById(R.id.carspot);
             TextView price = (TextView) view.findViewById(R.id.price);
             ImageView image = (ImageView) view.findViewById(R.id.image);
 
-            //set address and description
-            String completeAddress =  " " + slot.getStreetName() + ", " + slot.getSuburb() + ", ";
-            address.setText(completeAddress);
 
 
-            //display trimmed excerpt for description
+            if(!isRentals){
+                address.setText(slot.getStreetName());
 
-            description.setText("WIll contain sensor information");
+                //display trimmed excerpt for description
+                description.setText(slot.getName());
+
+                //set price and rental attributes
+                price.setText("£" + String.valueOf(slot.getTotal()));
+                bedroom.setText("From: " + String.valueOf(slot.getFrom()));
+                bathroom.setText("Till: " + String.valueOf(slot.getTill()));
+                carspot.setText("Duration: " + String.valueOf(slot.getDuration()));
+
+                //get the image associated with this slot
+                //int imageID = context.getResources().getIdentifier(slot.getImage(), "drawable", context.getPackageName());
+                image.setImageResource(R.drawable.driveway);
 
 
-            //set price and rental attributes
-            price.setText("$" + String.valueOf(slot.getPrice()));
-            //bedroom.setText("Bed: " + String.valueOf(slot.getBedrooms()));
-            //bathroom.setText("Bath: " + String.valueOf(slot.getBathrooms()));
-            carspot.setText("Car: " + String.valueOf(slot.getCarspots()));
 
-            //get the image associated with this slot
-            //int imageID = context.getResources().getIdentifier(slot.getImage(), "drawable", context.getPackageName());
-            image.setImageResource(R.drawable.driveway);
 
-            return view;
+                return view;
+            }else {
+                //set address and description
+                String completeAddress =  " " + slot.getStreetName() + ", " + slot.getSuburb() + ", ";
+                address.setText(completeAddress);
+
+                //display trimmed excerpt for description
+                description.setText("WIll contain sensor information");
+
+                //set price and rental attributes
+                price.setText("£" + String.valueOf(slot.getPrice()));
+                //bedroom.setText("Bed: " + String.valueOf(slot.getBedrooms()));
+                //bathroom.setText("Bath: " + String.valueOf(slot.getBathrooms()));
+                carspot.setText("Car: " + String.valueOf(slot.getCarspots()));
+
+                //get the image associated with this slot
+                //int imageID = context.getResources().getIdentifier(slot.getImage(), "drawable", context.getPackageName());
+                image.setImageResource(R.drawable.driveway);
+
+                return view;
+            }
         }
     }
 

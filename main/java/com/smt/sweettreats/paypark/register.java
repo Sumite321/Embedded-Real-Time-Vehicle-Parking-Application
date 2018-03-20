@@ -207,7 +207,12 @@ public class register extends AppCompatActivity {
 
                         Toast.makeText(register.this, String.format("Slot registered"),
                                 Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(register.this,register_username.class));
+
+                        Intent intent = new Intent(register.this,register_username.class);
+
+                        intent.putExtra("address", addressLine1[0]);
+
+                        startActivity(intent);
                         finish();
                     }
                     @Override

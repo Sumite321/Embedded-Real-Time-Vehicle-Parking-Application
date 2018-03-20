@@ -25,7 +25,13 @@
         <activity android:name=".ConfirmBooking" />
         <activity android:name=".DateTest" />
         <activity android:name=".AboutYou" />
-        <activity android:name=".LoginHome"></activity>
+        <activity android:name=".LoginHome" />
+        <activity
+            android:name=".RequestBooking"
+            android:label="@string/title_activity_request_booking"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".MakeBooking" />
+        <activity android:name=".DisplayBooking"></activity>
     </application>
 
 </manifest>

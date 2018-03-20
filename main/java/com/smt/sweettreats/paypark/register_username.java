@@ -65,9 +65,18 @@ public class register_username extends AppCompatActivity {
                         DatabaseReference loginValue = database.getReference("login")
                                 .child(username)
                                 .child("ID");
-                        loginValue.setValue(String.valueOf(key));
+
+                        String address = (String) getIntent().getSerializableExtra("address");
+
+                        DatabaseReference loginAddress= database.getReference("login")
+                                .child(username)
+                                .child("address");
+                        loginAddress.setValue(address);
                         Toast.makeText(register_username.this, String.format("User registered"),
                                 Toast.LENGTH_LONG).show();
+
+
+
                         // myUsr.setText(key1);
 
                         startActivity(new Intent(register_username.this, success.class));

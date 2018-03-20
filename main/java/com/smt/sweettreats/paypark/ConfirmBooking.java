@@ -7,20 +7,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ConfirmBooking extends AppCompatActivity {
+public class ConfirmBooking extends AppCompatActivity implements Serializable{
 
 
     private TextView address,price,duration,from, till, date,total;
     private double priceTotal;
     private int time;
     private Button checkout;
-    static List<String> slotDetails = new ArrayList<>();
+    private  ArrayList<String> slotDetails = new ArrayList<>();
+    private  String addressData, fromTime, tillTime, dateV;
+    private  double priceData;
 
 
     @Override
@@ -39,12 +42,13 @@ public class ConfirmBooking extends AppCompatActivity {
         checkout = (Button) findViewById(R.id.btn_checkout);
 
 
-        final String addressData = getIntent().getExtras().getString("address");
-        final Double priceData = getIntent().getExtras().getDouble("price");
-        String outcodeData = getIntent().getExtras().getString("outcode");
-        final String fromTime = getIntent().getExtras().getString("from");
-        final String tillTime = getIntent().getExtras().getString("till");
-        final String dateV = getIntent().getExtras().getString("date");
+        addressData = getIntent().getExtras().getString("address");
+        priceData = getIntent().getExtras().getDouble("price");
+        //String outcodeData = getIntent().getExtras().getString("outcode");
+        fromTime = getIntent().getExtras().getString("from");
+        tillTime = getIntent().getExtras().getString("till");
+        dateV = getIntent().getExtras().getString("date");
+
 
         try {
             time = differenceTime(fromTime, tillTime);
@@ -54,7 +58,7 @@ public class ConfirmBooking extends AppCompatActivity {
         }
 
         address.setText(addressData);
-        price.setText(String.format("£ %s0",priceData.toString()));
+        price.setText(String.format("£ %s0",String.valueOf(priceData)));
         duration.setText(String.format("%d minutes", time));
         from.setText(fromTime);
         till.setText(tillTime);
@@ -65,12 +69,18 @@ public class ConfirmBooking extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 slotDetails.add(addressData);
-                slotDetails.add(priceData.toString());
+                slotDetails.add(String.valueOf(priceData));
+                slotDetails.add(String.valueOf(time));
                 slotDetails.add(fromTime);
                 slotDetails.add(tillTime);
                 slotDetails.add(dateV);
                 slotDetails.add(String.format("£ %.2f0", priceTotal));
-                startActivity(new Intent(ConfirmBooking.this, AboutYou.class));
+
+
+                Intent intent = new Intent(ConfirmBooking.this, AboutYou.class);
+                intent.putExtra("slotD", slotDetails);
+
+                startActivity(intent);
 
             }
         });

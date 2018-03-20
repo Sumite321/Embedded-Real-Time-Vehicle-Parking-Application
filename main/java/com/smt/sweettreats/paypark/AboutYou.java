@@ -1,5 +1,6 @@
 package com.smt.sweettreats.paypark;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class AboutYou extends AppCompatActivity {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class AboutYou extends AppCompatActivity implements Serializable{
 
 
     private TextView user,pw,email,name;
     private Button next;
+    private ArrayList<String> slots = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,16 @@ public class AboutYou extends AppCompatActivity {
                                 .child(user.getText().toString())
                                 .child("ID");
                         loginValue.setValue(String.valueOf(key));
+
+
+                        slots = (ArrayList<String>) getIntent().getSerializableExtra("slotD");
+
+                        Intent intent = new Intent(AboutYou.this, MakeBooking.class);
+                        //intent.putExtra("streetNumber", slot.getStreetNumber());
+                        intent.putExtra("userID", key); //address bookable
+                        intent.putExtra("slotD", slots);
+                        intent.putExtra("userName", name.getText().toString());
+                        startActivity(intent);
 
                     }
 

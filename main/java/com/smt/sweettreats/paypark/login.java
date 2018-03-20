@@ -63,7 +63,7 @@ public class login extends AppCompatActivity {
 
 
 
-                            session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString());
+                            session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString(),snapshot.child("address").getValue().toString());
 
 
                             Toast.makeText(login.this, "Successfuly logged in",
