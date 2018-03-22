@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         toBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ApiRadius.class);
+                Intent intent = new Intent(MainActivity.this, PairSensor.class);
                 startActivity(intent);
                 finish();
             }

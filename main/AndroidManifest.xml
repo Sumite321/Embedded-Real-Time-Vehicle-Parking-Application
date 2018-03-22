@@ -31,7 +31,9 @@
             android:label="@string/title_activity_request_booking"
             android:theme="@style/AppTheme" />
         <activity android:name=".MakeBooking" />
-        <activity android:name=".DisplayBooking"></activity>
-    </application>
+        <activity android:name=".DisplayBooking" />
+        <activity android:name=".PairSensor"></activity>
 
+    </application>
+    <uses-permission android:name="android.permission.CAMERA"/>
 </manifest>
