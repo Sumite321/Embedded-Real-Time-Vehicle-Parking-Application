@@ -11,15 +11,23 @@ public class Location {
 
     private String latitude;
     private String longitude;
-    private List<String> addresses;
+    private String outcode;
+    private String distance;
+    private List<String> addresses = new ArrayList<>();
     private List<Addresses> compiledAddresses = new ArrayList<>();
 
 
     public Location(){}
 
+
+    public Location(String latitude, String longitude, String outcode, String distance) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.outcode = outcode;
+        this.distance = distance;
+    }
+
     public Location(String lat, String lon, List<String> addresses){
-
-
         this.addresses = addresses;
         this.latitude = lat;
         this.longitude = lon;
@@ -53,4 +61,11 @@ public class Location {
     }
 
 
+    public String getOutcode() {
+        return outcode;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true"
+    android:background="@android:color/holo_blue_dark">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:layout_margin="40dp"
+
+        android:background="@drawable/roundbutton">
+
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="serif-monospace"
+            android:gravity="center"
+            android:paddingTop="30dp"
+            android:text="Welcome"
+            android:textAllCaps="true"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="50sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/sessionUser"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:paddingTop="3dp"
+            android:text="Smt"
+            android:textAllCaps="true"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="15sp" />
+
+
+
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="20dp"
+            android:padding="12dp"
+            android:background="@drawable/buttom"
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="View my bookings" />
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_view2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="20dp"
+            android:padding="12dp"
+            android:background="@drawable/buttom"
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="View who booked my driveway" />
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_reserve"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="0dp"
+            android:padding="12dp"
+            android:background="@drawable/buttom"
+
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="Reserve a driveway"
+            />
+
+
+        <!-- Signup Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_rent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="0dp"
+            android:padding="12dp"
+            android:background="@drawable/buttom"
+
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="Rent my driveway" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_pair"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="0dp"
+            android:padding="12dp"
+            android:background="@drawable/buttom"
+
+            android:textColor="@android:color/holo_blue_dark"
+            android:text="Pair Sensor" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_logout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="40dp"
+            android:padding="12dp"
+            android:text="Log out"
+            android:background="@drawable/logoutbtn"/>
+
+
+
+    </LinearLayout>
+</ScrollView>

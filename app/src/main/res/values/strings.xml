@@ -2,4 +2,7 @@
     <string name="app_name">Pay&amp;Park</string>
     <string name="reserve_a_driveway">Reserve a driveway</string>
     <string name="rent_my_smartdriveway">Rent my SmartDriveway</string>
-    </resources>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_request_booking">RequestBooking</string>
+</resources>

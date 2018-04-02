@@ -10,12 +10,27 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="0dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:layout_margin="40dp"
 
         android:background="@drawable/roundbutton">
+
+<!---
+        <TextView
+            android:id="@+id/registerhere"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:text="Register your driveway"
+            android:textAllCaps="true"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="30sp" />
+-->
+
 
         <!--  Name Label -->
         <android.support.design.widget.TextInputLayout
@@ -23,11 +38,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_name"
+
+            <EditText
+                android:id="@+id/input_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Name"
                 android:inputType="textCapWords"
-                android:hint="Name" />
+                android:selectAllOnFocus="true"
+                android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Email Label -->
@@ -58,66 +77,192 @@
                 android:inputType="textPostalAddress" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Username Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <!--  Search PostCode -->
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_search"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText
-                android:id="@+id/input_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"
-                android:inputType="textWebEditText" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <!-- Password Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-
-            <EditText
-                android:id="@+id/input_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
-
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:textColor="@android:color/background_light"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:text="Find address" />
 
         <Spinner
             android:id="@+id/spinner1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"/>
+            android:background="@drawable/background"
+            android:spinnerMode="dropdown"
+            android:paddingTop="20dp"></Spinner>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/input_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_date"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectDate"
+            android:textColor="@android:color/background_light"
+            android:text="Pick Date" />
 
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/input_time_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeFrom"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectFromTime"
+            android:textColor="@android:color/background_light"
+            android:text="Pick From Time" />
 
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/input_time_till"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Date"
+                android:inputType="textPostalAddress"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_timeTill"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/holo_blue_dark"
+            android:elevation="0dp"
+            android:padding="1dp"
+            android:onClick="selectTillTime"
+            android:textColor="@android:color/background_light"
+            android:text="Pick End Time" />
+
+
+        <!-- Price Label -->
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/price_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Charge per hour"
+                android:inputType="textPostalAddress"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Spinner
+            android:id="@+id/spin_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background"
+            android:spinnerMode="dropdown"
+            android:paddingTop="20dp"
+            ></Spinner>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
+
+            <TextView
+                android:id="@+id/link_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Already registed? Login"
+                android:inputType="textPostalAddress"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+        </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
+
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_signup"
+            android:id="@+id/btn_nxt"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttom"
             android:padding="12dp"
-            android:text="Next" />
+            android:text="Next"
 
-        <TextView android:id="@+id/link_login"
-            android:layout_width="fill_parent"
+            android:textColor="@android:color/holo_blue_light"
+            android:textStyle="bold" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
-            android:gravity="center"
-            android:textSize="16dip"/>
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="0dp">
 
+            <TextView
+                android:id="@+id/empty_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" "
+                android:inputType="textPostalAddress"
+                android:textAlignment="center"
+                android:textStyle="bold" />
+
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </ScrollView>

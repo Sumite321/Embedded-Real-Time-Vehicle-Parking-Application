@@ -1,6 +1,8 @@
 package com.smt.sweettreats.paypark;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 public class login extends AppCompatActivity {
 
@@ -23,25 +27,21 @@ public class login extends AppCompatActivity {
     private DatabaseReference ref;
     private ProgressDialog mProgress;
     private EditText edit_usr, edit_pw;
+    public static SessionManager session;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        session = new SessionManager(getApplicationContext());
         ref = FirebaseDatabase.getInstance().getReference();
 
         mProgress = new ProgressDialog(login.this);
         mProgress.setTitle("Processing...");
-        mProgress.setMessage("Please wait...");
+        mProgress.setMessage("Logging you in...");
         mProgress.setCancelable(false);
         mProgress.setIndeterminate(true);
-
-
-
-
-
 
         login = (Button) findViewById(R.id.btn_login);
         //tv = (TextView) findViewById(R.id.link_signup);
@@ -53,7 +53,7 @@ public class login extends AppCompatActivity {
             public void onClick(View v) {
                 mProgress.show();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference userRef = database.getReference("users");
+                DatabaseReference userRef = database.getReference("login");
                 userRef.child(edit_usr.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -62,13 +62,23 @@ public class login extends AppCompatActivity {
                             //tv.setText("You are logged in");
 
 
-                            edit_usr.setText("You are found");
-                            mProgress.setMessage("You are logged in!");
-                            mProgress.setCancelable(true);
+
+                            session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString(),snapshot.child("address").getValue().toString());
+
+
+                            Toast.makeText(login.this, "Successfuly logged in",
+                                    Toast.LENGTH_LONG).show();
+
+
+                            Intent intent = new Intent(login.this,LoginHome.class);
+                            mProgress.dismiss();
+                            startActivity(intent);
+                            finish();
                         } else {
-                            edit_usr.setText("You are not found");
-                            mProgress.setMessage("You are not logged in!");
-                            mProgress.setCancelable(true);
+
+                            Toast.makeText(login.this, "Check your credentials",
+                                    Toast.LENGTH_LONG).show();
+                            mProgress.dismiss();
                             //user does not exist, do something else
                            // tv.setText("You are not logged in");
                         }
