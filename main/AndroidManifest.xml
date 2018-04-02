@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.smt.sweettreats.paypark">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".login" />
+        <activity android:name=".register" />
+        <activity android:name=".success" />
+        <activity android:name=".register_username" />
+        <activity android:name=".sensor_question" />
+        <activity android:name=".bookingListView" />
+        <activity android:name=".ApiRadius" />
+        <activity android:name=".ConfirmBooking" />
+        <activity android:name=".DateTest" />
+        <activity android:name=".AboutYou" />
+        <activity android:name=".LoginHome" />
+        <activity
+            android:name=".RequestBooking"
+            android:label="@string/title_activity_request_booking"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".MakeBooking" />
+        <activity android:name=".DisplayBooking" />
+        <activity android:name=".PairSensor"></activity>
+
+    </application>
+    <uses-permission android:name="android.permission.CAMERA"/>
+</manifest>
