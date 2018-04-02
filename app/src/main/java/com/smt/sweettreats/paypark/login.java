@@ -61,8 +61,6 @@ public class login extends AppCompatActivity {
                             //user exists, do something
                             //tv.setText("You are logged in");
 
-
-
                             session.createLoginSession(edit_usr.getText().toString(),snapshot.child("ID").getValue().toString(),snapshot.child("address").getValue().toString());
 
 

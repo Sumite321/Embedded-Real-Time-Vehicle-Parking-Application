@@ -1,29 +1,40 @@
 package com.smt.sweettreats.paypark;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class AboutYou extends AppCompatActivity implements Serializable{
 
 
-    private TextView user,pw,email,name;
-    private Button next;
+    private TextView user,pw,email,name,postData;
+    Location postcode = new Location();
+
+    private Spinner spinner;
+    private Button next,search;
     private ArrayList<String> slots = new ArrayList<>();
 
     @Override
@@ -35,9 +46,18 @@ public class AboutYou extends AppCompatActivity implements Serializable{
         pw = (TextView)  findViewById(R.id.input_password);
         email = (TextView)  findViewById(R.id.input_email);
         user = (TextView)  findViewById(R.id.input_username);
+        spinner = (Spinner) findViewById(R.id.spinner1);
+        search = (Button) findViewById(R.id.btn_search);
+        postData = (EditText) findViewById(R.id.input_address);
+
 
         next = (Button) findViewById(R.id.btn_nxt);
-
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AboutYou.getPostCode().execute(Common.apiRequest(String.valueOf(postData.getText())));
+            }
+        });
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +94,8 @@ public class AboutYou extends AppCompatActivity implements Serializable{
                                 .child("Email");
                         usersEmail.setValue(email1);
 
+                        String text = spinner.getSelectedItem().toString();
+                        String[] addressLine1 = text.split(","); // addressline1[0] for first line
 
                         /**** ADD TO LOGIN TABLE ****/
                         DatabaseReference loginUsr = database.getReference("login")
@@ -89,6 +111,10 @@ public class AboutYou extends AppCompatActivity implements Serializable{
                                 .child("ID");
                         loginValue.setValue(String.valueOf(key));
 
+                        DatabaseReference loginAdd = database.getReference("login")
+                                .child(user.getText().toString())
+                                .child("address");
+                        loginAdd.setValue(addressLine1[0]);
 
                         slots = (ArrayList<String>) getIntent().getSerializableExtra("slotD");
 
@@ -111,4 +137,67 @@ public class AboutYou extends AppCompatActivity implements Serializable{
             }
         });
 }
+
+    private class getPostCode extends AsyncTask<String,Void,String> {
+        ProgressDialog pd = new ProgressDialog(AboutYou.this);
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setTitle("Looking for postcode...");
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String stream = null;
+            String urlString = params[0];
+
+            Helper http = new Helper();
+            stream = http.getHTTPData(urlString);
+            return stream;
+        }
+
+
+        protected void onPostExecute(String result) {
+
+
+            super.onPostExecute(result);
+
+            if(result == null){
+                pd.dismiss();
+                Toast.makeText(AboutYou.this, String.format("Postcode not found"),
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // get the json file
+            Gson gson = new Gson();
+
+            //use reflection to reflect the json file to entities
+            Type mType = new TypeToken<Location>(){}.getType();
+            postcode = gson.fromJson(result,mType);
+            System.out.print(postcode);
+
+
+            System.out.println("+++++++++TEST" + postcode.getAddress());
+            // Creating adapter for spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(AboutYou.this, android.R.layout.simple_spinner_item, postcode.getAddress());
+
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            spinner.setAdapter(dataAdapter);
+            Toast.makeText(AboutYou.this, String.format("Found %d postcode", postcode.getAddress().size()),
+                    Toast.LENGTH_LONG).show();
+            pd.dismiss();
+
+            //System.out.println(postcode.getLatitude());
+            //System.out.println(postcode.getAddress());
+        }
+    }
+
+
 }
