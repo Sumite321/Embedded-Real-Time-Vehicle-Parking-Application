@@ -64,6 +64,7 @@ public class register extends AppCompatActivity {
     public Spinner spinner,spin_prices;
     private TextView loginLink, myName, myEmail, input_date,input_time_from,input_time_till;
     private ProgressDialog pd;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class register extends AppCompatActivity {
 
 
 
-
+        session = MainActivity.session;
         /* Date */
 
 
@@ -122,6 +123,34 @@ public class register extends AppCompatActivity {
             }
         });
 
+        /* Auto Set values if logged in */
+
+
+        if(session.isLoggedIn()){
+
+            myName.setText(MainActivity.session.getUserDetails().get("userid"));
+
+            ArrayList<String> address = new ArrayList<>();
+            address.add(MainActivity.session.getUserDetails().get("address"));
+
+            ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(register.this, android.R.layout.simple_spinner_item, address);
+
+            // Drop down layout style - list view with radio button
+            dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            spinner.setAdapter(dataAdapter1);
+
+            myEmail.setVisibility(View.GONE);
+            postData.setVisibility(View.GONE);
+            search.setEnabled(false);
+        }
+
+
+
+
+
+
         /* ******** Registration to database  ******** */
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +166,14 @@ public class register extends AppCompatActivity {
                 mDatabasePlayers.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot){
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
                         int key = 0; // contains the current key
 
-                        for(DataSnapshot s: dataSnapshot.getChildren()){
+                        for (DataSnapshot s : dataSnapshot.getChildren()) {
                             key = Integer.parseInt(s.getKey());
                         }
-                        key = key +1 ;
+                        key = key + 1;
                         //String key1 = String.valueOf(key);
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -162,29 +191,36 @@ public class register extends AppCompatActivity {
                         String priceHour = spin_prices.getSelectedItem().toString();
                         priceHour = priceHour.substring(1, priceHour.length());
 
-
+                        if (!MainActivity.session.isLoggedIn()) {
                         DatabaseReference usersName = database.getReference("users")
                                 .child(String.valueOf(key))
                                 .child("Name");
                         usersName.setValue(name);
 
 
-                        DatabaseReference usersEmail = database.getReference("users")
-                                .child(String.valueOf(key))
-                                .child("Email");
-                        usersEmail.setValue(email);
+                            DatabaseReference usersEmail = database.getReference("users")
+                                    .child(String.valueOf(key))
+                                    .child("Email");
+                            usersEmail.setValue(email);
 
-                        DatabaseReference usersAddress = database.getReference("users")
-                                .child(String.valueOf(key))
-                                .child("Address");
-                        usersAddress.setValue(addressLine1[0]);
+                            DatabaseReference usersAddress = database.getReference("users")
+                                    .child(String.valueOf(key))
+                                    .child("Address");
+                            usersAddress.setValue(addressLine1[0]);
 
+                            DatabaseReference slotOutcode = database.getReference("slot")
+                                    .child(addressLine1[0])
+                                    .child("postcode");
+                            String outcode = postData.getText().toString();
+
+                            slotOutcode.setValue(outcode.substring(0, outcode.length() - 3).toUpperCase());
+                        }
                         DatabaseReference slotAvailabilityFrom = database.getReference("slot")
                                 .child(addressLine1[0])
                                 .child("availability")
                                 .child(input_date.getText().toString())
                                 .child("from_time");
-                                slotAvailabilityFrom.setValue(input_time_from.getText().toString());
+                        slotAvailabilityFrom.setValue(input_time_from.getText().toString());
 
                         DatabaseReference slotAvailabilityTill = database.getReference("slot")
                                 .child(addressLine1[0])
@@ -198,22 +234,23 @@ public class register extends AppCompatActivity {
                                 .child("price");
                         slotPrice.setValue(priceHour);
 
-                        DatabaseReference slotOutcode = database.getReference("slot")
-                                .child(addressLine1[0])
-                                .child("postcode");
-                        String outcode = postData.getText().toString();
-
-                        slotOutcode.setValue(outcode.substring(0, outcode.length() - 3).toUpperCase());
 
                         Toast.makeText(register.this, String.format("Slot registered"),
                                 Toast.LENGTH_LONG).show();
 
-                        Intent intent = new Intent(register.this,register_username.class);
+                        if (MainActivity.session.isLoggedIn()) {
+                            Intent intent = new Intent(register.this, success.class);
 
-                        intent.putExtra("address", addressLine1[0]);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent(register.this, register_username.class);
 
-                        startActivity(intent);
-                        finish();
+                            intent.putExtra("address", addressLine1[0]);
+
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

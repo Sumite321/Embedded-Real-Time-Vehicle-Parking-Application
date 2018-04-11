@@ -15,7 +15,7 @@ public class LoginHome extends AppCompatActivity {
 
     private TextView username;
     private SessionManager session;
-    private Button logout, viewBooking,viewWhoBooked,reserve;
+    private Button logout, viewBooking,viewWhoBooked,reserve,rent;
 
 
     @Override
@@ -23,7 +23,7 @@ public class LoginHome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_home);
 
-        session = login.session;
+        session = MainActivity.session;
 
 
 
@@ -31,6 +31,7 @@ public class LoginHome extends AppCompatActivity {
         username.setText(session.getUserDetails().get("userid") + session.getUserDetails().get("id"));
         logout = (Button) findViewById(R.id.btn_logout);
         reserve = (Button) findViewById(R.id.btn_reserve);
+        rent = (Button) findViewById(R.id.btn_rent);
         viewBooking = (Button ) findViewById(R.id.btn_view);
         viewWhoBooked = (Button ) findViewById(R.id.btn_view2);
 
@@ -68,6 +69,14 @@ public class LoginHome extends AppCompatActivity {
             }
         });
 
+        rent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginHome.this, register.class);
+                startActivity(intent);
+
+            }
+        });
 
     }
 }

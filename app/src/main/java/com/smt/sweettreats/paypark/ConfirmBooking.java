@@ -30,6 +30,8 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
     private double priceTotal;
     private int time;
     private Button checkout;
+    private SessionManager session;
+
     private  ArrayList<String> slotDetails = new ArrayList<>();
     private  String addressData, fromTime, tillTime, dateV;
     private  double priceData;
@@ -40,7 +42,7 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_booking);
 
-
+        session = MainActivity.session;
         address = (TextView) findViewById(R.id.address);
         price = (TextView) findViewById(R.id.price);
         duration = (TextView) findViewById(R.id.duration);
@@ -125,11 +127,18 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
                 slotDetails.add(dateV);
                 slotDetails.add(String.format("£ %.2f0", priceTotal));
 
+                if(session.isLoggedIn()){
+                    //if logged in
+                    Intent intent = new Intent(ConfirmBooking.this, MakeBooking.class);
+                    intent.putExtra("slotD", slotDetails);
+                    startActivity(intent);
 
-                Intent intent = new Intent(ConfirmBooking.this, AboutYou.class);
-                intent.putExtra("slotD", slotDetails);
+                }else {
+                    Intent intent = new Intent(ConfirmBooking.this, AboutYou.class);
+                    intent.putExtra("slotD", slotDetails);
+                    startActivity(intent);
+                }
 
-                startActivity(intent);
 
             }
         });

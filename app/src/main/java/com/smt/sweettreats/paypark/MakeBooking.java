@@ -30,6 +30,8 @@ public class MakeBooking extends AppCompatActivity {
     private int time, userKey;
     private Button checkout;
     private String name, addressData;
+    private SessionManager session;
+
     private List<String> slots = new ArrayList<>();
     private ProgressDialog pd;
 
@@ -40,7 +42,7 @@ public class MakeBooking extends AppCompatActivity {
         setContentView(R.layout.activity_make_booking);
 
 
-
+        session = MainActivity.session;
         address = (TextView) findViewById(R.id.raddress);
         price = (TextView) findViewById(R.id.rprice);
         duration = (TextView) findViewById(R.id.rduration);
@@ -52,12 +54,19 @@ public class MakeBooking extends AppCompatActivity {
         nameT = (TextView) findViewById(R.id.rname);
         availability = (TextView) findViewById(R.id.available);
 
+        if(session.isLoggedIn()){
+            slots = (ArrayList<String>) getIntent().getSerializableExtra("slotD");
+            userKey = Integer.valueOf( session.getUserDetails().get("id"));
+            name = session.getUserDetails().get("userid");
 
-        slots = (ArrayList<String>) getIntent().getSerializableExtra("slotD");
-        userKey = (Integer) getIntent().getSerializableExtra("userID");
-        name = (String)getIntent().getSerializableExtra("userName");
-                System.out.println(slots.get(0));
 
+        }
+        else {
+            slots = (ArrayList<String>) getIntent().getSerializableExtra("slotD");
+            userKey = (Integer) getIntent().getSerializableExtra("userID");
+            name = (String) getIntent().getSerializableExtra("userName");
+            System.out.println(slots.get(0));
+        }
 
             addressData = slots.get(0);
         nameT.setText(name);

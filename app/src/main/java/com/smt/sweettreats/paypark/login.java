@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,14 +28,14 @@ public class login extends AppCompatActivity {
     private DatabaseReference ref;
     private ProgressDialog mProgress;
     private EditText edit_usr, edit_pw;
-    public static SessionManager session;
+    public SessionManager session;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        session = new SessionManager(getApplicationContext());
+        session = MainActivity.session;
         ref = FirebaseDatabase.getInstance().getReference();
 
         mProgress = new ProgressDialog(login.this);
@@ -67,7 +68,7 @@ public class login extends AppCompatActivity {
                             Toast.makeText(login.this, "Successfuly logged in",
                                     Toast.LENGTH_LONG).show();
 
-
+                            Log.d("Session Created",session.getUserDetails().toString());
                             Intent intent = new Intent(login.this,LoginHome.class);
                             mProgress.dismiss();
                             startActivity(intent);

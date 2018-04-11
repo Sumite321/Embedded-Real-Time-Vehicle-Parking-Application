@@ -224,7 +224,8 @@ public class ApiRadius extends AppCompatActivity implements Serializable{
 
         protected void onPostExecute(String result) {
 
-
+            showFilteredArray.clear();
+            filteredPostcode.clear();
             super.onPostExecute(result);
 
             if(result == null){

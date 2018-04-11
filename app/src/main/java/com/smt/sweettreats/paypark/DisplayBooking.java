@@ -46,10 +46,10 @@ public class DisplayBooking extends AppCompatActivity {
         isRentals = (Boolean) getIntent().getSerializableExtra("isRentals");
 
         //get the address of the current logged in user (for someone who would like to see their rentals)
-        final String address = login.session.getUserDetails().get("address");
+        final String address = MainActivity.session.getUserDetails().get("address");
         // get their userID (for someone who would like to see their bookings)
-        final String userID = login.session.getUserDetails().get("id");
-        final String userName = login.session.getUserDetails().get("userid");
+        final String userID = MainActivity.session.getUserDetails().get("id");
+        final String userName = MainActivity.session.getUserDetails().get("userid");
 
         Log.d("check-1_displaybooking",address);
         Log.d("check0_displaybooking",userID);

@@ -39,5 +39,18 @@
         android:textAllCaps="false"
         android:textSize="18sp" />
 
+    <Button
+        android:id="@+id/loginNow"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/suite"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/roundbutton"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textSize="18sp" />
 
 </RelativeLayout>

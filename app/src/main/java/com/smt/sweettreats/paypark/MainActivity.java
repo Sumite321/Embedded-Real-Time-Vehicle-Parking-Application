@@ -22,9 +22,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements Serializable{
 
     private static final String TAG = "";
-    private Button toRegister, toBook;
+    private Button toRegister, toBook,toLogin;
     private DatabaseReference ref;
-
+    public static SessionManager session;
 
     private TextView txt;
     private DBConnection db;
@@ -35,12 +35,12 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
 
-
+        session = new SessionManager(getApplicationContext());
         db = new DBConnection(); // initialise the database connection
 
         toRegister = (Button) findViewById(R.id.suite);
         toBook = (Button) findViewById(R.id.suite2);
-
+        toLogin = (Button) findViewById(R.id.loginNow);
 
 
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements Serializable{
         toRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, login.class));
+                startActivity(new Intent(MainActivity.this, register.class));
             }
         });
 
@@ -63,5 +63,16 @@ public class MainActivity extends AppCompatActivity implements Serializable{
             }
         });
 
+        toLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
     }
+
 }

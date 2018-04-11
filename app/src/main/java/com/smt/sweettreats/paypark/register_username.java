@@ -54,8 +54,6 @@ public class register_username extends AppCompatActivity {
                         // get the password
                         String password = myPw.getText().toString();
 
-                        DatabaseReference loginUsr = database.getReference("login")
-                                .child(username);
 
                         DatabaseReference loginPw = database.getReference("login")
                                 .child(username)
@@ -65,7 +63,7 @@ public class register_username extends AppCompatActivity {
                         DatabaseReference loginValue = database.getReference("login")
                                 .child(username)
                                 .child("ID");
-
+                        loginValue.setValue(key);
                         String address = (String) getIntent().getSerializableExtra("address");
 
                         DatabaseReference loginAddress= database.getReference("login")
