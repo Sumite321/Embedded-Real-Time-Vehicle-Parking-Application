@@ -241,11 +241,33 @@
             android:id="@+id/btn_checkout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="14dp"
             android:layout_marginTop="24dp"
             android:padding="12dp"
             android:layout_gravity="bottom"
             android:text="Checkout"
+            android:background="@android:color/holo_blue_dark"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:layout_gravity="bottom"
+            android:text="Cancel"
+            android:background="@android:color/holo_blue_dark"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="10dp"
+            android:padding="12dp"
+            android:layout_gravity="bottom"
+            android:text="Edit"
             android:background="@android:color/holo_blue_dark"/>
 
     </LinearLayout>

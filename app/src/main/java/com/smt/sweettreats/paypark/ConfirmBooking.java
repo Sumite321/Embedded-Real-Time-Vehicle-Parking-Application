@@ -26,15 +26,16 @@ import java.util.List;
 public class ConfirmBooking extends AppCompatActivity implements Serializable{
 
 
-    private TextView address,price,duration,from, till, date,total,availability;
+    private TextView address,price,duration,from, till, date,total,availability,title3;
     private double priceTotal;
     private int time;
-    private Button checkout;
+    private Button checkout,edit,cancel;
     private SessionManager session;
 
     private  ArrayList<String> slotDetails = new ArrayList<>();
-    private  String addressData, fromTime, tillTime, dateV;
+    private  String addressData, fromTime, tillTime, dateV,bookID;
     private  double priceData;
+    private boolean editOrCancel;
 
 
     @Override
@@ -44,6 +45,7 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
 
         session = MainActivity.session;
         address = (TextView) findViewById(R.id.address);
+        title3 = (TextView) findViewById(R.id.title3);
         price = (TextView) findViewById(R.id.price);
         duration = (TextView) findViewById(R.id.duration);
         from = (TextView) findViewById(R.id.textFrom);
@@ -52,7 +54,10 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
         total = (TextView) findViewById(R.id.textTotal);
         checkout = (Button) findViewById(R.id.btn_checkout);
         availability = (TextView) findViewById(R.id.available);
+        edit = (Button) findViewById(R.id.btn_edit);
+        cancel = (Button) findViewById(R.id.btn_cancel);
 
+        bookID = getIntent().getExtras().getString("bookID");
 
         addressData = getIntent().getExtras().getString("address");
         //
@@ -63,6 +68,8 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
         dateV = getIntent().getExtras().getString("date");
 
 
+        editOrCancel = (Boolean) getIntent().getSerializableExtra("editOrCancel");
+
         try {
             time = differenceTime(fromTime, tillTime);
             priceTotal = (priceData / 60) * time;
@@ -71,16 +78,25 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
         }
 
         address.setText(addressData);
+        // no need of price field if editOrCancel
         price.setText(String.format("£ %s0", String.valueOf(priceData)));
+        if(editOrCancel){price.setVisibility(View.GONE);title3.setVisibility(View.GONE);}
         duration.setText(String.format("%d minutes", time));
         from.setText(fromTime);
         till.setText(tillTime);
         date.setText(dateV);
         total.setText(String.format("£ %.2f0", priceTotal));
+        // set the total to the booking total
+        if(editOrCancel){total.setText(String.valueOf(priceData));
+        checkout.setVisibility(View.GONE);
+        }else{
+            edit.setVisibility(View.GONE);
+            cancel.setVisibility(View.GONE);
 
+        }
 
         DatabaseReference ref6 = FirebaseDatabase.getInstance().getReference();
-
+        // sensor data
         ref6.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataS) {
@@ -95,12 +111,16 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
                     //from.setText(dataS.child("Sensor").child(dataS.child("slot").child(addressData).child("sensor").getValue().toString()).child("available").getValue().toString());
                     if(dataS.child("Sensor").child(dataS.child("slot").child(addressData).child("sensor").getValue().toString()).child("available").getValue().toString().equals("available")){
                         availability.setBackgroundColor(Color.GREEN);
-                        checkout.setEnabled(true);
-                        checkout.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                        if(!editOrCancel) {
+                            checkout.setEnabled(true);
+                            checkout.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+                        }
                     }else{
-                        availability.setBackgroundColor(Color.RED);
-                        checkout.setEnabled(false);
-                        checkout.setBackgroundColor(Color.GRAY);
+                        if(!editOrCancel) {
+                            availability.setBackgroundColor(Color.RED);
+                            checkout.setEnabled(false);
+                            checkout.setBackgroundColor(Color.GRAY);
+                        }
                         //Toast.makeText()
                     }
                 }
@@ -125,7 +145,7 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
                 slotDetails.add(fromTime);
                 slotDetails.add(tillTime);
                 slotDetails.add(dateV);
-                slotDetails.add(String.format("£ %.2f0", priceTotal));
+                slotDetails.add(String.valueOf(priceTotal));
 
                 if(session.isLoggedIn()){
                     //if logged in
@@ -143,7 +163,18 @@ public class ConfirmBooking extends AppCompatActivity implements Serializable{
             }
         });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                //firebase.child(id).removeValue();
+
+
+                DatabaseReference ref7 = FirebaseDatabase.getInstance().getReference().child("booking").child(dateV).child(addressData)
+                        .child(bookID);
+                ref7.removeValue();
+            }
+        });
 
     }
 

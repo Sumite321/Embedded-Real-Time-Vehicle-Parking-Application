@@ -13,12 +13,13 @@ public class slot implements Serializable{
 
     //property basics
     //private int streetNumber;
-    private String streetName, name, duration, fromTime, tillTime, priceTotal;
+    private String streetName, name, duration, fromTime, tillTime;
+    private String id;
     private String suburb;
     private String outcode;
     private List<String> description = new ArrayList<>();
     private String image;
-    private Double price;
+    private Double price,priceTotal;
     //private int bedrooms;
     //private int bathrooms;
     private int carspots;
@@ -41,7 +42,7 @@ public class slot implements Serializable{
         this.featured = featured;
     }
 
-    public slot(String streetName, String dname, String duration, String from, String till, String total){
+    public slot(String id,String streetName, String dname, String duration, String from, String till, Double total){
 
         this.streetName = streetName;
         this.name = dname;
@@ -49,6 +50,7 @@ public class slot implements Serializable{
         this.fromTime = from;
         this.tillTime = till;
         this.priceTotal = total;
+        this.id = id;
 
     }
 
@@ -75,9 +77,11 @@ public class slot implements Serializable{
     public String getDuration() { return duration; }
     public String getFrom() { return fromTime; }
     public String getTill() { return tillTime; }
-    public String getTotal() { return priceTotal; }
+    public Double getTotal() { return priceTotal; }
 
-
+    public String getId(){
+        return id;
+    }
 
 
 }

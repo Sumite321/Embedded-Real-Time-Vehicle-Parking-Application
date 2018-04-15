@@ -175,6 +175,7 @@ public class MakeBooking extends AppCompatActivity {
                                 .child("duration");
                         bookingDuration.setValue(slots.get(2));
 
+
                         // from time
                         DatabaseReference bookingFrom = database.getReference("booking")
                                 .child(String.valueOf(slots.get(5)))
@@ -197,7 +198,7 @@ public class MakeBooking extends AppCompatActivity {
                                 .child(slots.get(0))
                                 .child(String.valueOf(key))
                                 .child("price");
-                        bookingTotal.setValue(slots.get(1));
+                        bookingTotal.setValue(slots.get(6));
 
                         // Status
                         DatabaseReference bookingStatus = database.getReference("booking")

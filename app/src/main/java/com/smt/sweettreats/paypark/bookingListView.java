@@ -58,8 +58,9 @@ public class bookingListView extends AppCompatActivity implements Serializable{
         for(slot slot:rentalSlots){
             System.out.println(slot.getOutcode());
             System.out.println(slot.getCarspots());
-            System.out.println(slot.getDuration());
-            System.out.println(slot.getFrom());
+            System.out.println(slot.getId());
+            System.out.println(slot.getTotal());
+
 
         }
 
@@ -79,19 +80,45 @@ public class bookingListView extends AppCompatActivity implements Serializable{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 slot slot = rentalSlots.get(position);
-
                 Intent intent = new Intent(bookingListView.this, ConfirmBooking.class);
-                //intent.putExtra("streetNumber", slot.getStreetNumber());
-                intent.putExtra("address", slot.getStreetName()); //address bookable
-                intent.putExtra("outcode", slot.getOutcode()); // postcode
-                intent.putExtra("price",slot.getPrice()); // price per hour for booking
-                intent.putExtra("from", fromTime); //address bookable
-                intent.putExtra("till", tillTime); // postcode
-                intent.putExtra("date",date); // price per hour for booking
-                System.out.println("asdsd");
-                System.out.println(slot.getStreetName());
-                //intent.putExtra("state", slot.getState());
-                intent.putExtra("image", slot.getImage());  // optional
+
+
+                    // if data is for search for slots, next screen shows checkout button
+                    if(onlyView) {
+
+
+                        //intent.putExtra("streetNumber", slot.getStreetNumber());
+                        intent.putExtra("address", slot.getStreetName()); //address bookable
+                        intent.putExtra("outcode", slot.getOutcode()); // postcode
+                        intent.putExtra("price", slot.getPrice()); // price per hour for booking
+                        intent.putExtra("from", fromTime); //address bookable
+                        intent.putExtra("till", tillTime); // postcode
+                        intent.putExtra("date", date); // price per hour for booking
+                        intent.putExtra("bookID", slot.getId()); // postcode
+
+                        System.out.println("asdsd");
+                        System.out.println(slot.getStreetName());
+                        intent.putExtra("editOrCancel", false);
+                        //intent.putExtra("state", slot.getState());
+                        intent.putExtra("image", slot.getImage());  // optional
+                    }else{
+                        //next screen is for edit/cancel booking
+                        //intent.putExtra("streetNumber", slot.getStreetNumber());
+                        intent.putExtra("address", slot.getStreetName()); //address bookable
+                        intent.putExtra("outcode", slot.getOutcode()); // postcode
+                        intent.putExtra("price", slot.getTotal()); // price per hour for booking
+                        intent.putExtra("from", slot.getFrom()); //address bookable
+                        intent.putExtra("till", slot.getTill()); // postcode
+                        intent.putExtra("bookID", slot.getId()); // postcode
+
+                        intent.putExtra("date", date); // price per hour for booking
+                        intent.putExtra("editOrCancel", true);
+                        System.out.println("asdsd");
+                        System.out.println(slot.getStreetName());
+                        //intent.putExtra("state", slot.getState());
+                        intent.putExtra("image", slot.getImage());  // optional
+
+                    }
 
                 startActivityForResult(intent, 1000);
             }
@@ -148,7 +175,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
 
             if(!isRentals){
-                address.setText(slot.getStreetName());
+                address.setText(slot.getStreetName()+"\n");
 
                 //display trimmed excerpt for description
                 description.setText(slot.getName());
@@ -168,7 +195,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
                 return view;
             }else if(isRentals && onlyView){
-                address.setText(slot.getStreetName());
+                address.setText(slot.getStreetName() + "\n");
 
                 //display trimmed excerpt for description
                 description.setText(slot.getName());
@@ -193,7 +220,7 @@ public class bookingListView extends AppCompatActivity implements Serializable{
 
             }
             else {
-                address.setText(slot.getStreetName());
+                address.setText(slot.getStreetName()+"\n");
 
                 //display trimmed excerpt for description
                 description.setText(slot.getName());

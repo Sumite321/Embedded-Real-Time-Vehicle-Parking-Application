@@ -30,7 +30,8 @@ public class DisplayBooking extends AppCompatActivity {
     private boolean isRentals = false;
     private TextView idate;
     private Button show;
-    private String addressS, from, till, price, stats, owner;
+    private String addressS, from, till, stats, owner,bookID;
+    private Double price;
     public ArrayList<slot> showSlots = new ArrayList<>();
 
 
@@ -82,17 +83,18 @@ public class DisplayBooking extends AppCompatActivity {
                                     for (DataSnapshot dsp : dataS.child(idate.getText().toString()).child(address).getChildren()) {
                                         Log.d("check6_displaybooking","runs");
                                         Log.d("check9_displaybooking",dsp.toString());
+                                        bookID = dsp.getKey();
 
                                         // loop through all the bookingID
                                         till = dsp.child("till_time").getValue().toString();
                                         stats = dsp.child("status").getValue().toString();
                                         from = dsp.child("from_time").getValue().toString();
-                                        price = dsp.child("price").getValue().toString();
+                                        price = Double.valueOf( dsp.child("price").getValue().toString());
                                         owner = dsp.child("driver_id").getValue().toString();
                                         // loop through all the bookingID
 
                                             // if the bookingID has the address/userID add to arrayList
-                                            showSlots.add(new slot(address, "Booked by "+owner, stats, from, till, price));
+                                            showSlots.add(new slot(bookID,address, "Booked by "+owner, stats, from, till, price));
                                             // name of the driver
                                             // duration
                                             //total
@@ -105,6 +107,8 @@ public class DisplayBooking extends AppCompatActivity {
                             }
                             Intent intent = new Intent(DisplayBooking.this, bookingListView.class);
                             Log.d("check15_displaybooking",showSlots.toString());
+
+                            intent.putExtra("date",idate.getText().toString());
 
                             intent.putExtra("rentals",isRentals);
                             intent.putExtra("onlyView",false);
@@ -138,12 +142,12 @@ public class DisplayBooking extends AppCompatActivity {
                                         Log.d("check4_displaybooking",dsp.toString());
 
                                         Log.d("check5_displaybooking","runs");
-
+                                        bookID = dsp.getKey();
                                         // loop through all the bookingID
                                         till = dsp.child("till_time").getValue().toString();
                                         stats = dsp.child("status").getValue().toString();
                                         from = dsp.child("from_time").getValue().toString();
-                                        price = dsp.child("price").getValue().toString();
+                                        price = Double.valueOf(dsp.child("price").getValue().toString());
                                         //owner = dsp.child("owner_id").getValue().toString();
                                         for (DataSnapshot bookingID : dsp.getChildren()) {
                                             Log.d("check6_displaybooking",bookingID.toString());
@@ -157,7 +161,7 @@ public class DisplayBooking extends AppCompatActivity {
                                                 if (bookingID.getValue().toString().equals(userID)) {
                                                     Log.d("check13_displaybooking","this has run too");
 
-                                                    showSlots.add(new slot(addressS, "Driveway owner: N/A", stats, from, till, price));
+                                                    showSlots.add(new slot(bookID,addressS, "Driveway owner: N/A", stats, from, till, price));
 
                                                     Log.d("check18_displaybooking",showSlots.toString());
 //duration
@@ -176,6 +180,7 @@ public class DisplayBooking extends AppCompatActivity {
                             Intent intent = new Intent(DisplayBooking.this, bookingListView.class);
                             Log.d("check15_displaybooking",showSlots.toString());
 
+                            intent.putExtra("date",idate.getText().toString());
                             intent.putExtra("rentals",isRentals);
                             intent.putExtra("onlyView",false);
                             intent.putExtra("showBooking",showSlots);
