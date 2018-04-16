@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.smt.sweettreats.paypark">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,8 +34,11 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".MakeBooking" />
         <activity android:name=".DisplayBooking" />
-        <activity android:name=".PairSensor"></activity>
-
+        <activity android:name=".PairSensor" />
+        <activity
+            android:name=".connectToSensor"
+            android:label="@string/title_activity_connect_to_sensor"
+            android:theme="@style/AppTheme"></activity>
     </application>
-    <uses-permission android:name="android.permission.CAMERA"/>
+
 </manifest>

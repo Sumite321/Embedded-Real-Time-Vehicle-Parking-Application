@@ -15,7 +15,7 @@ public class LoginHome extends AppCompatActivity {
 
     private TextView username;
     private SessionManager session;
-    private Button logout, viewBooking,viewWhoBooked,reserve,rent;
+    private Button logout, viewBooking,viewWhoBooked,reserve,rent,pair;
 
 
     @Override
@@ -34,6 +34,7 @@ public class LoginHome extends AppCompatActivity {
         rent = (Button) findViewById(R.id.btn_rent);
         viewBooking = (Button ) findViewById(R.id.btn_view);
         viewWhoBooked = (Button ) findViewById(R.id.btn_view2);
+        pair = (Button ) findViewById(R.id.btn_pair);
 
         viewBooking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +74,17 @@ public class LoginHome extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginHome.this, register.class);
+                startActivity(intent);
+
+            }
+        });
+
+        pair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginHome.this, PairSensor.class);
+                intent.putExtra("codeID","Unknown");
+
                 startActivity(intent);
 
             }
